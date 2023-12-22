@@ -1,0 +1,323 @@
+DOWN
+LEFT x 4
+UP x 3
+ABSORB_GROUND
+LEFT
+RIGHT
+CREATE_GROUND
+RIGHT
+LEFT
+ABSORB_GROUND
+RIGHT
+DOWN
+CREATE_GROUND
+DOWN
+ABSORB_GROUND
+LEFT
+RIGHT
+CREATE_GROUND
+UP
+ABSORB_GROUND
+RIGHT
+CREATE_GROUND
+RIGHT x 2
+
+#########
+### xxxx#
+##  xxxx#
+##  xxxx#
+##x  ⇑x↓#
+#xx xx x#
+#     ⇑@#
+#########
+
+DOWN
+#########
+### xxxx#
+##  xxxx#
+##  xxxx#
+##x  ⇓x↓#
+#xx xx⇑x#
+#      @#
+#########
+
+LEFT
+#########
+### xxxx#
+##  xxxx#
+##  xxxx#
+##x  ⇑x↓#
+#xx xx⇓x#
+#     @ #
+#########
+
+LEFT
+#########
+### xxxx#
+##  xxxx#
+##  xxxx#
+##x  ⇓x↓#
+#xx xx x#
+#    @⇓ #
+#########
+
+LEFT
+#########
+### xxxx#
+##  xxxx#
+##  xxxx#
+##x  ⇑x↓#
+#xx xx x#
+#   @ ⇑ #
+#########
+
+LEFT
+#########
+### xxxx#
+##  xxxx#
+##  xxxx#
+##x  ⇓x↓#
+#xx xx⇑x#
+#  @    #
+#########
+
+UP
+#########
+### xxxx#
+##  xxxx#
+##  xxxx#
+##x  ⇑x↓#
+#xx@xx⇓x#
+#       #
+#########
+
+UP
+#########
+### xxxx#
+##  xxxx#
+##  xxxx#
+##x@ ⇓x↓#
+#xx xx x#
+#     ⇓ #
+#########
+
+UP
+#########
+### xxxx#
+##  xxxx#
+## @xxxx#
+##x  ⇑x↓#
+#xx xx x#
+#     ⇑ #
+#########
+
+ABSORB_GROUND
+#########
+### xxxx#
+## xxxxx#
+## @xxxx#
+##x  ⇓x↓#
+#xx xx⇑x#
+#       #
+#########
+
+LEFT
+#########
+### xxxx#
+## xxxxx#
+##@ xxxx#
+##x  ⇑x↓#
+#xx xx⇓x#
+#       #
+#########
+
+RIGHT
+#########
+### xxxx#
+## xxxxx#
+## @xxxx#
+##x  ⇓x↓#
+#xx xx x#
+#     ⇓ #
+#########
+
+CREATE_GROUND
+#########
+### xxxx#
+## xxxxx#
+## @ xxx#
+##x  ⇑x↓#
+#xx xx x#
+#     ⇑ #
+#########
+
+RIGHT
+#########
+### xxxx#
+## xxxxx#
+##  @xxx#
+##x  ⇓x↓#
+#xx xx⇑x#
+#       #
+#########
+
+LEFT
+#########
+### xxxx#
+## xxxxx#
+## @ xxx#
+##x  ⇑x↓#
+#xx xx⇓x#
+#       #
+#########
+
+ABSORB_GROUND
+#########
+### xxxx#
+## xxxxx#
+##x@ xxx#
+##x  ⇓x↓#
+#xx xx x#
+#     ⇓ #
+#########
+
+RIGHT
+#########
+### xxxx#
+## xxxxx#
+##x @xxx#
+##x  ⇑x↓#
+#xx xx x#
+#     ⇑ #
+#########
+
+DOWN
+#########
+### xxxx#
+## xxxxx#
+##x  xxx#
+##x @⇓x↓#
+#xx xx⇑x#
+#       #
+#########
+
+CREATE_GROUND
+#########
+### xxxx#
+## xxxxx#
+##x  xxx#
+##x @⇑x↓#
+#xx  x⇓x#
+#       #
+#########
+
+DOWN
+#########
+### xxxx#
+## xxxxx#
+##x  xxx#
+##x  ⇓x↓#
+#xx @x x#
+#     ⇓ #
+#########
+
+ABSORB_GROUND
+#########
+### xxxx#
+## xxxxx#
+##x  xxx#
+##x  ⇑x↓#
+#xx @x x#
+#   x ⇑ #
+#########
+
+LEFT
+#########
+### xxxx#
+## xxxxx#
+##x  xxx#
+##x  ⇓x↓#
+#xx@ x⇑x#
+#   x   #
+#########
+
+RIGHT
+#########
+### xxxx#
+## xxxxx#
+##x  xxx#
+##x  ⇑x↓#
+#xx @x⇓x#
+#   x   #
+#########
+
+CREATE_GROUND
+#########
+### xxxx#
+## xxxxx#
+##x  xxx#
+##x  ⇓x↓#
+#xx @  x#
+#   x ⇓ #
+#########
+
+UP
+#########
+### xxxx#
+## xxxxx#
+##x  xxx#
+##x @ x↓#
+#xx  ⇓ x#
+#   x ⇑ #
+#########
+
+ABSORB_GROUND
+#########
+### xxxx#
+## xxxxx#
+##x xxxx#
+##x @ x↓#
+#xx   ⇑x#
+#   x⇓  #
+#########
+
+RIGHT
+#########
+### xxxx#
+## xxxxx#
+##x xxxx#
+##x  @x↓#
+#xx   ⇓x#
+#   x⇑  #
+#########
+
+CREATE_GROUND
+#########
+### xxxx#
+## xxxxx#
+##x xxxx#
+##x  @ ↓#
+#xx  ⇑ x#
+#   x ⇓ #
+#########
+
+RIGHT
+#########
+### xxxx#
+## xxxxx#
+##x xxxx#
+##x  ⇑@↓#
+#xx    x#
+#   x ⇑ #
+#########
+
+RIGHT
+#########
+### xxxx#
+## xxxxx#
+##x xxxx#
+##x  ⇓ @#
+#xx   ⇑x#
+#   x   #
+#########
+
