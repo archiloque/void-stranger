@@ -84,6 +84,11 @@ public class Preparer implements CharEntity {
             return ENTITY_CHEST_CLOSED;
         }
 
+        Optional<SimpleImporterEntity> glass = find(position, importedImporterLevel.entities().glass());
+        if (glass.isPresent()) {
+            return ENTITY_GLASS;
+        }
+
         Optional<ImporterEntityWithDirection> enemy = find(position, importedImporterLevel.entities().enemy());
         if (enemy.isPresent()) {
             switch (enemy.get().getDirection()) {

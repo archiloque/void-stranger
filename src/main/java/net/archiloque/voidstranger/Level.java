@@ -12,7 +12,7 @@ public record Level(
         @NotNull Position[] positions
 ) {
 
-    public int positionIndex(Position position) {
+    public int positionIndex(@NotNull Position position) {
         return Arrays.binarySearch(positions, position);
     }
 

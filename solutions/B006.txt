@@ -1,0 +1,434 @@
+DOWN x 2
+UP
+ABSORB_GROUND
+DOWN
+LEFT x 2
+CREATE_GROUND
+RIGHT
+ABSORB_GROUND
+LEFT x 2
+UP
+CREATE_GROUND
+LEFT
+ABSORB_GROUND
+RIGHT
+CREATE_GROUND
+DOWN
+RIGHT
+ABSORB_GROUND
+UP
+CREATE_GROUND
+UP
+DOWN
+ABSORB_GROUND
+UP
+OPEN_CHEST
+LEFT
+CREATE_GROUND
+DOWN
+ABSORB_GROUND
+LEFT
+UP
+CREATE_GROUND
+UP x 3
+LEFT
+
+##############
+#↓ xxx xxxxxx#
+#  x   #######
+##xxCxx#######
+##xxxx@#######
+#   xx x######
+#xxx   #######
+##############
+
+DOWN
+##############
+#↓ xxx xxxxxx#
+#  x   #######
+##xxCxx#######
+##xxxx #######
+#   xx@x######
+#xxx   #######
+##############
+
+DOWN
+##############
+#↓ xxx xxxxxx#
+#  x   #######
+##xxCxx#######
+##xxxx #######
+#   xx x######
+#xxx  @#######
+##############
+
+UP
+##############
+#↓ xxx xxxxxx#
+#  x   #######
+##xxCxx#######
+##xxxx #######
+#   xx@x######
+#xxx   #######
+##############
+
+ABSORB_GROUND
+##############
+#↓ xxx xxxxxx#
+#  x   #######
+##xxCxx#######
+##xxxxx#######
+#   xx@x######
+#xxx   #######
+##############
+
+DOWN
+##############
+#↓ xxx xxxxxx#
+#  x   #######
+##xxCxx#######
+##xxxxx#######
+#   xx x######
+#xxx  @#######
+##############
+
+LEFT
+##############
+#↓ xxx xxxxxx#
+#  x   #######
+##xxCxx#######
+##xxxxx#######
+#   xx x######
+#xxx @ #######
+##############
+
+LEFT
+##############
+#↓ xxx xxxxxx#
+#  x   #######
+##xxCxx#######
+##xxxxx#######
+#   xx x######
+#xxx@  #######
+##############
+
+CREATE_GROUND
+##############
+#↓ xxx xxxxxx#
+#  x   #######
+##xxCxx#######
+##xxxxx#######
+#   xx x######
+#xx @  #######
+##############
+
+RIGHT
+##############
+#↓ xxx xxxxxx#
+#  x   #######
+##xxCxx#######
+##xxxxx#######
+#   xx x######
+#xx  @ #######
+##############
+
+ABSORB_GROUND
+##############
+#↓ xxx xxxxxx#
+#  x   #######
+##xxCxx#######
+##xxxxx#######
+#   xx x######
+#xx  @x#######
+##############
+
+LEFT
+##############
+#↓ xxx xxxxxx#
+#  x   #######
+##xxCxx#######
+##xxxxx#######
+#   xx x######
+#xx @ x#######
+##############
+
+LEFT
+##############
+#↓ xxx xxxxxx#
+#  x   #######
+##xxCxx#######
+##xxxxx#######
+#   xx x######
+#xx@  x#######
+##############
+
+UP
+##############
+#↓ xxx xxxxxx#
+#  x   #######
+##xxCxx#######
+##xxxxx#######
+#  @xx x######
+#xx   x#######
+##############
+
+CREATE_GROUND
+##############
+#↓ xxx xxxxxx#
+#  x   #######
+##xxCxx#######
+##x xxx#######
+#  @xx x######
+#xx   x#######
+##############
+
+LEFT
+##############
+#↓ xxx xxxxxx#
+#  x   #######
+##xxCxx#######
+##x xxx#######
+# @ xx x######
+#xx   x#######
+##############
+
+ABSORB_GROUND
+##############
+#↓ xxx xxxxxx#
+#  x   #######
+##xxCxx#######
+##x xxx#######
+#x@ xx x######
+#xx   x#######
+##############
+
+RIGHT
+##############
+#↓ xxx xxxxxx#
+#  x   #######
+##xxCxx#######
+##x xxx#######
+#x @xx x######
+#xx   x#######
+##############
+
+CREATE_GROUND
+##############
+#↓ xxx xxxxxx#
+#  x   #######
+##xxCxx#######
+##x xxx#######
+#x @ x x######
+#xx   x#######
+##############
+
+DOWN
+##############
+#↓ xxx xxxxxx#
+#  x   #######
+##xxCxx#######
+##x xxx#######
+#x   x x######
+#xx@  x#######
+##############
+
+RIGHT
+##############
+#↓ xxx xxxxxx#
+#  x   #######
+##xxCxx#######
+##x xxx#######
+#x   x x######
+#xx @ x#######
+##############
+
+ABSORB_GROUND
+##############
+#↓ xxx xxxxxx#
+#  x   #######
+##xxCxx#######
+##x xxx#######
+#x   x x######
+#xx @xx#######
+##############
+
+UP
+##############
+#↓ xxx xxxxxx#
+#  x   #######
+##xxCxx#######
+##x xxx#######
+#x  @x x######
+#xx  xx#######
+##############
+
+CREATE_GROUND
+##############
+#↓ xxx xxxxxx#
+#  x   #######
+##xxCxx#######
+##x  xx#######
+#x  @x x######
+#xx  xx#######
+##############
+
+UP
+##############
+#↓ xxx xxxxxx#
+#  x   #######
+##xxCxx#######
+##x @xx#######
+#x   x x######
+#xx  xx#######
+##############
+
+DOWN
+##############
+#↓ xxx xxxxxx#
+#  x   #######
+##xxCxx#######
+##x  xx#######
+#x  @x x######
+#xx  xx#######
+##############
+
+ABSORB_GROUND
+##############
+#↓ xxx xxxxxx#
+#  x   #######
+##xxCxx#######
+##x  xx#######
+#x  @x x######
+#xx xxx#######
+##############
+
+UP
+##############
+#↓ xxx xxxxxx#
+#  x   #######
+##xxCxx#######
+##x @xx#######
+#x   x x######
+#xx xxx#######
+##############
+
+OPEN_CHEST
+##############
+#↓ xxx xxxxxx#
+#  x   #######
+##xxcxx#######
+##x @xx#######
+#x   x x######
+#xx xxx#######
+##############
+
+LEFT
+##############
+#↓ xxx xxxxxx#
+#  x   #######
+##xxcxx#######
+##x@ xx#######
+#x   x x######
+#xx xxx#######
+##############
+
+CREATE_GROUND
+##############
+#↓ xxx xxxxxx#
+#  x   #######
+##xxcxx#######
+## @ xx#######
+#x   x x######
+#xx xxx#######
+##############
+
+DOWN
+##############
+#↓ xxx xxxxxx#
+#  x   #######
+##xxcxx#######
+##   xx#######
+#x @ x x######
+#xx xxx#######
+##############
+
+ABSORB_GROUND
+##############
+#↓ xxx xxxxxx#
+#  x   #######
+##xxcxx#######
+##   xx#######
+#x @ x x######
+#xxxxxx#######
+##############
+
+LEFT
+##############
+#↓ xxx xxxxxx#
+#  x   #######
+##xxcxx#######
+##   xx#######
+#x@  x x######
+#xxxxxx#######
+##############
+
+UP
+##############
+#↓ xxx xxxxxx#
+#  x   #######
+##xxcxx#######
+##@  xx#######
+#x   x x######
+#xxxxxx#######
+##############
+
+CREATE_GROUND
+##############
+#↓ xxx xxxxxx#
+#  x   #######
+## xcxx#######
+##@  xx#######
+#x   x x######
+#xxxxxx#######
+##############
+
+UP
+##############
+#↓ xxx xxxxxx#
+#  x   #######
+##@xcxx#######
+##   xx#######
+#x   x x######
+#xxxxxx#######
+##############
+
+UP
+##############
+#↓ xxx xxxxxx#
+# @x   #######
+## xcxx#######
+##   xx#######
+#x   x x######
+#xxxxxx#######
+##############
+
+UP
+##############
+#↓@xxx xxxxxx#
+#  x   #######
+## xcxx#######
+##   xx#######
+#x   x x######
+#xxxxxx#######
+##############
+
+LEFT
+##############
+#@ xxx xxxxxx#
+#  x   #######
+## xcxx#######
+##   xx#######
+#x   x x######
+#xxxxxx#######
+##############
+

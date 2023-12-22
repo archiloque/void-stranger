@@ -25,6 +25,10 @@ public record ImporterEntities(
         @Nullable
         List<ImporterEntityWithDirection> enemy,
 
+        @SerializedName("Glass")
+        @Nullable
+        List<SimpleImporterEntity> glass,
+
         @SerializedName("Ground")
         @Nullable
         List<SimpleImporterEntity> ground,
@@ -37,6 +41,10 @@ public record ImporterEntities(
         @Nullable
         List<ImporterEntityWithDirection> playerStartPosition,
 
+        @SerializedName("Rupee")
+        @Nullable
+        List<SimpleImporterEntity> rupee,
+
         @SerializedName("Wall")
         @Nullable
         List<SimpleImporterEntity> wall
@@ -48,9 +56,11 @@ public record ImporterEntities(
                 chest,
                 downStairs,
                 enemy,
+                glass,
                 ground,
                 hole,
                 playerStartPosition,
+                rupee,
                 wall
         ).filter(Objects::nonNull).flatMap(Collection::stream);
     }

@@ -25,8 +25,10 @@ public class App {
                 Move currentMove = preparationResult.move();
                 Level level = preparationResult.level();
                 for (String actionString : args[1].split(", ")) {
+                    System.out.println("[" + actionString + "]");
                     Action action = Action.valueOf(actionString);
                     currentMove = Player.simulate(level, currentMove, action);
+
                 }
                 Printer.printPath(level, preparationResult.move(), currentMove);
             } else {

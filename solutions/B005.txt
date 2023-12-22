@@ -1,0 +1,239 @@
+UP
+LEFT
+RIGHT
+ABSORB_GROUND
+DOWN
+CREATE_GROUND
+DOWN
+UP
+ABSORB_GROUND
+DOWN
+CREATE_GROUND
+DOWN
+UP
+ABSORB_GROUND
+DOWN
+CREATE_GROUND
+DOWN
+LEFT
+UP
+OPEN_CHEST
+RIGHT
+UP
+RIGHT
+
+#####
+#   #
+# @ #
+#xxx#
+#Cx↓#
+# xx#
+#####
+
+UP
+#####
+# @ #
+#   #
+#xxx#
+#Cx↓#
+# xx#
+#####
+
+LEFT
+#####
+#@  #
+#   #
+#xxx#
+#Cx↓#
+# xx#
+#####
+
+RIGHT
+#####
+# @ #
+#   #
+#xxx#
+#Cx↓#
+# xx#
+#####
+
+ABSORB_GROUND
+#####
+# @x#
+#   #
+#xxx#
+#Cx↓#
+# xx#
+#####
+
+DOWN
+#####
+#  x#
+# @ #
+#xxx#
+#Cx↓#
+# xx#
+#####
+
+CREATE_GROUND
+#####
+#  x#
+# @ #
+#x x#
+#Cx↓#
+# xx#
+#####
+
+DOWN
+#####
+#  x#
+#   #
+#x@x#
+#Cx↓#
+# xx#
+#####
+
+UP
+#####
+#  x#
+# @ #
+#x x#
+#Cx↓#
+# xx#
+#####
+
+ABSORB_GROUND
+#####
+# xx#
+# @ #
+#x x#
+#Cx↓#
+# xx#
+#####
+
+DOWN
+#####
+# xx#
+#   #
+#x@x#
+#Cx↓#
+# xx#
+#####
+
+CREATE_GROUND
+#####
+# xx#
+#   #
+#x@x#
+#C ↓#
+# xx#
+#####
+
+DOWN
+#####
+# xx#
+#   #
+#x x#
+#C@↓#
+# xx#
+#####
+
+UP
+#####
+# xx#
+#   #
+#x@x#
+#C ↓#
+# xx#
+#####
+
+ABSORB_GROUND
+#####
+# xx#
+# x #
+#x@x#
+#C ↓#
+# xx#
+#####
+
+DOWN
+#####
+# xx#
+# x #
+#x x#
+#C@↓#
+# xx#
+#####
+
+CREATE_GROUND
+#####
+# xx#
+# x #
+#x x#
+#C@↓#
+#  x#
+#####
+
+DOWN
+#####
+# xx#
+# x #
+#x x#
+#C ↓#
+# @x#
+#####
+
+LEFT
+#####
+# xx#
+# x #
+#x x#
+#C ↓#
+#@ x#
+#####
+
+UP
+#####
+# xx#
+# x #
+#x x#
+#C ↓#
+#@ x#
+#####
+
+OPEN_CHEST
+#####
+# xx#
+# x #
+#x x#
+#c ↓#
+#@ x#
+#####
+
+RIGHT
+#####
+# xx#
+# x #
+#x x#
+#c ↓#
+# @x#
+#####
+
+UP
+#####
+# xx#
+# x #
+#x x#
+#c@↓#
+#  x#
+#####
+
+RIGHT
+#####
+# xx#
+# x #
+#x x#
+#c @#
+#  x#
+#####
+

@@ -159,15 +159,15 @@ public class Player implements CharEntity {
             case ENTITY_HOLE -> {
                 return actionHole(level, initialMove, targetPositionIndex, initialPositionIndex, callback);
             }
+            default -> throw new IllegalStateException("Unexpected value: " + targetEntity);
         }
-        return false;
     }
 
     private static boolean actionHole(@NotNull Level level, @NotNull Move initialMove, int targetPositionIndex, int initialPositionIndex, @NotNull Function<Move, Boolean> callback) {
-        if (initialMove.playerState == Move.PlayerState.HOLD_GROUND) {
+        if ((initialMove.playerState == Move.PlayerState.HOLD_GROUND) || (initialMove.playerState == Move.PlayerState.HOLD_GLASS)) {
             char[] newEntities = initialMove.entities.clone();
-            newEntities[targetPositionIndex] = ENTITY_GROUND;
-            postMove(level, initialMove, newEntities);
+            newEntities[targetPositionIndex] = initialMove.playerState.entity;
+            postMove(level, initialMove, newEntities, -1);
             if (CharEntity.isEnemy(newEntities[initialPositionIndex])) {
                 return false;
             }
@@ -188,7 +188,7 @@ public class Player implements CharEntity {
         if (initialMove.playerState == Move.PlayerState.STANDARD) {
             char[] newEntities = initialMove.entities.clone();
             newEntities[targetPositionIndex] = ENTITY_HOLE;
-            postMove(level, initialMove, newEntities);
+            postMove(level, initialMove, newEntities, -1);
             if (CharEntity.isEnemy(newEntities[initialPositionIndex])) {
                 return false;
             }
@@ -238,7 +238,7 @@ public class Player implements CharEntity {
         Position targetPosition = initialMove.playerPosition.add(delta);
         int targetPositionIndex = level.positionIndex(targetPosition);
         if (targetPositionIndex < 0) {
-            postMove(level, initialMove, newEntities);
+            postMove(level, initialMove, newEntities, -1);
             if (CharEntity.isEnemy(newEntities[initialPositionIndex])) {
                 return false;
             }
@@ -260,7 +260,7 @@ public class Player implements CharEntity {
                 return moveBoulder(level, initialMove, direction, delta, action, targetPosition, targetPositionIndex, newEntities, initialPositionIndex, callback);
             }
             case ENTITY_CHEST_OPEN, ENTITY_CHEST_CLOSED -> {
-                postMove(level, initialMove, newEntities);
+                postMove(level, initialMove, newEntities, -1);
                 if (CharEntity.isEnemy(newEntities[initialPositionIndex])) {
                     return false;
                 }
@@ -278,7 +278,7 @@ public class Player implements CharEntity {
                 return false;
             }
             case ENTITY_GROUND -> {
-                postMove(level, initialMove, newEntities);
+                postMove(level, initialMove, newEntities, -1);
                 if (CharEntity.isEnemy(newEntities[targetPositionIndex]) || CharEntity.isEnemy(initialMove.entities[targetPositionIndex])) {
                     return false;
                 }
@@ -295,8 +295,8 @@ public class Player implements CharEntity {
                 }
                 return callback.apply(newMove);
             }
+            default -> throw new IllegalStateException("Unexpected value: " + targetEntity);
         }
-        throw new IllegalStateException("" + targetEntity);
     }
 
     private static boolean moveBoulder(
@@ -325,13 +325,10 @@ public class Player implements CharEntity {
                     );
                     return callback.apply(newMove);
                 }
-                case ENTITY_ENEMY_FACING_UP -> {
-                    throw new IllegalArgumentException();
-                }
-                case ENTITY_GROUND -> {
+                case ENTITY_GROUND, ENTITY_ENEMY_FACING_UP, ENTITY_ENEMY_FACING_DOWN, ENTITY_ENEMY_FACING_LEFT, ENTITY_ENEMY_FACING_RIGHT -> {
                     newEntities[targetPositionIndex] = ENTITY_GROUND;
                     newEntities[beyondPositionIndex] = ENTITY_BOULDER;
-                    postMove(level, initialMove, newEntities);
+                    postMove(level, initialMove, newEntities, beyondPositionIndex);
                     if (CharEntity.isEnemy(newEntities[initialPositionIndex])) {
                         return false;
                     }
@@ -347,7 +344,7 @@ public class Player implements CharEntity {
                 }
                 case ENTITY_HOLE -> {
                     newEntities[targetPositionIndex] = ENTITY_GROUND;
-                    postMove(level, initialMove, newEntities);
+                    postMove(level, initialMove, newEntities, -1);
                     if (CharEntity.isEnemy(newEntities[initialPositionIndex])) {
                         return false;
                     }
@@ -366,44 +363,60 @@ public class Player implements CharEntity {
         return false;
     }
 
-    private static void postMove(@NotNull Level level, @NotNull Move initialiMove, char @NotNull [] newEntities) {
+    private static void postMove(
+            @NotNull Level level,
+            @NotNull Move initialiMove,
+            char @NotNull [] newEntities,
+            int crushedEnemyIndex
+    ) {
         for (int currentEntityIndex = 0; currentEntityIndex < newEntities.length; currentEntityIndex++) {
             char currentEntity = initialiMove.entities[currentEntityIndex];
             switch (currentEntity) {
                 case ENTITY_ENEMY_FACING_DOWN -> {
-                    prepareNextMoveEnemy(
-                            level,
-                            newEntities,
-                            currentEntityIndex,
-                            DELTA_DOWN,
-                            ENTITY_ENEMY_FACING_DOWN,
-                            ENTITY_ENEMY_FACING_UP);
+                    if (currentEntityIndex != crushedEnemyIndex) {
+                        prepareNextMoveEnemy(
+                                level,
+                                newEntities,
+                                currentEntityIndex,
+                                DELTA_DOWN,
+                                ENTITY_ENEMY_FACING_DOWN,
+                                ENTITY_ENEMY_FACING_UP);
+                    }
                 }
                 case ENTITY_ENEMY_FACING_LEFT -> {
-                    prepareNextMoveEnemy(
-                            level,
-                            newEntities,
-                            currentEntityIndex,
-                            DELTA_LEFT,
-                            ENTITY_ENEMY_FACING_LEFT,
-                            ENTITY_ENEMY_FACING_RIGHT);
+                    if (currentEntityIndex != crushedEnemyIndex) {
+                        prepareNextMoveEnemy(
+                                level,
+                                newEntities,
+                                currentEntityIndex,
+                                DELTA_LEFT,
+                                ENTITY_ENEMY_FACING_LEFT,
+                                ENTITY_ENEMY_FACING_RIGHT);
+                    }
                 }
                 case ENTITY_ENEMY_FACING_RIGHT -> {
-                    prepareNextMoveEnemy(
-                            level,
-                            newEntities,
-                            currentEntityIndex,
-                            DELTA_RIGHT,
-                            ENTITY_ENEMY_FACING_RIGHT,
-                            ENTITY_ENEMY_FACING_LEFT);
+                    if (currentEntityIndex != crushedEnemyIndex) {
+                        prepareNextMoveEnemy(
+                                level,
+                                newEntities,
+                                currentEntityIndex,
+                                DELTA_RIGHT,
+                                ENTITY_ENEMY_FACING_RIGHT,
+                                ENTITY_ENEMY_FACING_LEFT);
+                    }
                 }
                 case ENTITY_ENEMY_FACING_UP -> {
-                    prepareNextMoveEnemy(level,
-                            newEntities,
-                            currentEntityIndex,
-                            DELTA_UP,
-                            ENTITY_ENEMY_FACING_UP,
-                            ENTITY_ENEMY_FACING_DOWN);
+                    if (currentEntityIndex != crushedEnemyIndex) {
+                        prepareNextMoveEnemy(level,
+                                newEntities,
+                                currentEntityIndex,
+                                DELTA_UP,
+                                ENTITY_ENEMY_FACING_UP,
+                                ENTITY_ENEMY_FACING_DOWN);
+                    }
+                }
+                case ENTITY_GLASS -> {
+                    throw new IllegalArgumentException("");
                 }
             }
         }
@@ -418,11 +431,18 @@ public class Player implements CharEntity {
             char oppositeEnemy) {
         Position targetPosition = level.positions()[currentEntityIndex].add(delta);
         int targetPositionIndex = level.positionIndex(targetPosition);
-        if ((targetPositionIndex >= 0) && (result[targetPositionIndex] == ENTITY_GROUND)) {
-            result[currentEntityIndex] = ENTITY_GROUND;
-            result[targetPositionIndex] = currentEntity;
-        } else {
+        if (targetPositionIndex > 0) {
             result[currentEntityIndex] = oppositeEnemy;
+        } else {
+            switch (result[targetPositionIndex]) {
+                case ENTITY_BOULDER -> {
+                    result[currentEntityIndex] = oppositeEnemy;
+                }
+                case ENTITY_GROUND -> {
+                    result[targetPositionIndex] = currentEntity;
+                }
+                default -> throw new IllegalStateException("Unexpected value: " + result[targetPositionIndex]);
+            }
         }
     }
 }

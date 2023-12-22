@@ -1,17 +1,12 @@
 {
 	"identifier": "B012",
 	"uniqueIdentifer": "ccdcae20-8990-11ee-879a-3bf7ded3459a",
-	"x": 0,
-	"y": 672,
+	"x": 288,
+	"y": 1264,
 	"width": 192,
 	"height": 128,
 	"bgColor": "#696A79",
-	"neighbourLevels": [
-		{
-			"levelIid": "2e203510-8990-11ee-879a-290730033b9d",
-			"dir": "o"
-		}
-	],
+	"neighbourLevels": [],
 	"customFields" : {},
 	"layers": [],
 	"entities": {

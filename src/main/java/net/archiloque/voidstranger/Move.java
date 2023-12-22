@@ -47,9 +47,19 @@ public final class Move {
     }
 
     public enum PlayerState {
-        STANDARD,
-        HOLD_GROUND,
+        STANDARD('!'),
+        HOLD_GROUND(CharEntity.ENTITY_GROUND),
+        HOLD_GLASS(CharEntity.ENTITY_GLASS),
+        ;
+
+        public final char entity;
+
+        PlayerState(char entity) {
+            this.entity = entity;
+        }
     }
+
+
 
     public record ActionLinkedElement(@NotNull Action action, @Nullable ActionLinkedElement parent) {
     }
