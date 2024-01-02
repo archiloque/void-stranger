@@ -347,7 +347,7 @@ public class Player implements GroundEntity, UpEntity {
         }
         char targetGroundEntity = initialMove.groundEntities[targetPositionIndex];
         switch (targetGroundEntity) {
-            case ENTITY_GROUND_GROUND, ENTITY_GROUND_DOWNSTAIR -> {
+            case ENTITY_GROUND_GROUND, ENTITY_GROUND_DOWNSTAIR, ENTITY_GROUND_GLASS -> {
                 postMove(level, initialMove, newGroundEntities, newUpEntities, -1);
                 if (UpEntity.isEnemy(newUpEntities[targetPositionIndex]) || UpEntity.isEnemy(initialMove.upEntities[targetPositionIndex])) {
                     return false;

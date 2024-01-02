@@ -103,6 +103,9 @@ public class Printer implements UpEntity, GroundEntity {
             case ENTITY_GROUND_GROUND -> {
                 return " ";
             }
+            case ENTITY_GROUND_GLASS -> {
+                return "■";
+            }
         }
         throw new IllegalArgumentException("[" + upEntity + "] [" + groundEntity + "]");
     }

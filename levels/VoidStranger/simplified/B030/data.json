@@ -10,6 +10,21 @@
 	"customFields" : {},
 	"layers": [],
 	"entities": {
+		"Player_start_position": [
+			{
+				"id": "Player_start_position",
+				"iid": "9f906510-8990-11ee-b3d3-4777cb74bb2a",
+				"layer": "Special",
+				"x": 64,
+				"y": 96,
+				"width": 16,
+				"height": 16,
+				"color": 15251350,
+				"customFields": {
+					"Direction": "Up"
+				}
+			}
+		],
 		"Boulder": [
 			{
 				"id": "Boulder",
