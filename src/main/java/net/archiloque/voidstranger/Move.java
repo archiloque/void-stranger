@@ -21,6 +21,8 @@ public final class Move {
     final char @NotNull [] groundEntities;
     final char @NotNull [] upEntities;
 
+    final boolean @NotNull [] rupeesFound;
+
     @Nullable
     @EqualsAndHashCode.Exclude
     final ActionLinkedElement actions;
@@ -31,6 +33,7 @@ public final class Move {
             @NotNull PlayerState playerState,
             char @NotNull [] groundEntities,
             char @NotNull [] upEntities,
+            boolean @NotNull [] rupeesFound,
             @Nullable ActionLinkedElement actions
     ) {
         this.playerPositionIndex = playerPositionIndex;
@@ -38,6 +41,7 @@ public final class Move {
         this.playerState = playerState;
         this.groundEntities = groundEntities;
         this.upEntities = upEntities;
+        this.rupeesFound = rupeesFound;
         this.actions = actions;
     }
 

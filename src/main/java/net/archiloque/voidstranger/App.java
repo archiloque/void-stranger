@@ -31,6 +31,7 @@ public class App {
                     Printer.printLevel(level, currentMove, System.out);
                     System.out.println();
                 }
+                System.out.println("Over");
             } else {
                 throw new IllegalArgumentException("");
             }

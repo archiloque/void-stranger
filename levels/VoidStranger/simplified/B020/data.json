@@ -53,6 +53,19 @@
 				}
 			}
 		],
+		"Boulder": [
+			{
+				"id": "Boulder",
+				"iid": "6c99e520-8990-11ee-b3d3-43a53dfa5935",
+				"layer": "Up",
+				"x": 16,
+				"y": 48,
+				"width": 16,
+				"height": 16,
+				"color": 1578021,
+				"customFields" : {}
+			}
+		],
 		"Ground": [
 			{
 				"id": "Ground",

@@ -27,17 +27,21 @@ public class Preparer implements UpEntity, GroundEntity {
 
         ImporterEntities entities = importedImporterLevel.entities();
         ImporterEntityWithDirection importedPlayerPosition = entities.playerStartPosition().getFirst();
-        Position playerPosition = new Position(getColumn(importedPlayerPosition), getLine(importedPlayerPosition));
+        Position playerPosition = getPosition(importedPlayerPosition);
 
         Position[] entitiesPosition = importedImporterLevel.getGroundEntities().
                 map(entity -> new Position(getColumn(entity), getLine(entity))).
                 sorted().
                 toArray(Position[]::new);
+
+        int[] rupeesIndexes = getRupees(importedImporterLevel, entitiesPosition);
+
         Level level = new Level(
                 importedImporterLevel.identifier(),
                 width,
                 height,
-                entitiesPosition);
+                entitiesPosition,
+                rupeesIndexes);
         char[] groundEntities = new char[entitiesPosition.length];
         char[] upEntities = new char[entitiesPosition.length];
         for (int entityIndex = 0; entityIndex < entitiesPosition.length; entityIndex++) {
@@ -51,8 +55,26 @@ public class Preparer implements UpEntity, GroundEntity {
                 Move.PlayerState.EMPTY,
                 groundEntities,
                 upEntities,
+                new boolean[rupeesIndexes.length],
                 null);
         return new PreparationResult(level, move);
+    }
+
+    private static int[] getRupees(@NotNull ImporterLevel importedImporterLevel,
+                                   @NotNull Position[] entitiesPosition) {
+        List<SimpleImporterEntity> rupeesEntities = importedImporterLevel.entities().rupee();
+        if(rupeesEntities == null) {
+            return new int[0];
+        } else {
+            return rupeesEntities.stream().mapToInt(simpleImporterEntity ->
+                    Arrays.binarySearch(entitiesPosition, getPosition(simpleImporterEntity))
+            ).toArray();
+        }
+    }
+
+    @NotNull
+    private static Position getPosition(@NotNull ImporterEntity importerEntity) {
+        return new Position(getColumn(importerEntity), getLine(importerEntity));
     }
 
     private static int getColumn(ImporterEntity importerEntity) {

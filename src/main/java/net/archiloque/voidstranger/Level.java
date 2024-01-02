@@ -8,8 +8,8 @@ public record Level(
         @NotNull String identifier,
         int width,
         int height,
-        @NotNull Position[] positions
-) {
+        @NotNull Position[] positions,
+        int @NotNull [] rupeesIndexes) {
 
     public int positionIndex(@NotNull Position position) {
         return Arrays.binarySearch(positions, position);

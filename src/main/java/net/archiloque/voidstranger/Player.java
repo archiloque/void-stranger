@@ -66,20 +66,27 @@ public class Player implements GroundEntity, UpEntity {
         currentMoves.addFirst(preparationResult.move());
         knownMoves.add(preparationResult.move());
         Level level = preparationResult.level();
+        final AtomicReference<MoveStatus> currentStatus = new AtomicReference<MoveStatus>();
+        currentStatus.set(MoveStatus.LOOSE);
         while (!currentMoves.isEmpty()) {
             Move currentMove = currentMoves.removeFirst();
             if (nextMoves(level, currentMove, newMove -> {
                 if (knownMoves.add(newMove)) {
-                    if (isWinningMove(level, newMove)) {
-                        try {
-                            Printer.printPath(level, preparationResult.move(), newMove);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
+                    MoveStatus moveStatus = moveStatus(newMove);
+                    switch (moveStatus) {
+                        case WIN -> {
+                            printPath(preparationResult, newMove, level);
+                            return true;
                         }
-                        return true;
-                    } else {
-                        currentMoves.addLast(newMove);
+                        case WIN_NO_RUPEE, WIN_NO_CHESS -> {
+                            if (currentStatus.get() == MoveStatus.LOOSE) {
+                                printPath(preparationResult, newMove, level);
+                                currentStatus.set(moveStatus);
+                            }
+                        }
                     }
+                    currentMoves.addLast(newMove);
+                    return false;
                 }
                 return false;
             })) {
@@ -89,16 +96,37 @@ public class Player implements GroundEntity, UpEntity {
         System.out.println(" ### Fail !");
     }
 
-    private static boolean isWinningMove(@NotNull Level level, @NotNull Move move) {
+    private static void printPath(Preparer.PreparationResult preparationResult, Move newMove, Level level) {
+        try {
+            Printer.printPath(level, preparationResult.move(), newMove);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    enum MoveStatus {
+        WIN,
+        LOOSE,
+        WIN_NO_RUPEE,
+        WIN_NO_CHESS,
+    }
+
+    private static MoveStatus moveStatus(@NotNull Move move) {
         if (!(move.groundEntities[move.playerPositionIndex] == ENTITY_GROUND_DOWNSTAIR)) {
-            return false;
+            return MoveStatus.LOOSE;
         }
         for (char entity : move.upEntities) {
             if (entity == ENTITY_UP_CHEST_CLOSED) {
-                return false;
+                return MoveStatus.WIN_NO_CHESS;
             }
         }
-        return true;
+        for (boolean rupeeFound : move.rupeesFound) {
+            if (!rupeeFound) {
+                return MoveStatus.WIN_NO_RUPEE;
+            }
+        }
+        return MoveStatus.WIN;
     }
 
     private static boolean isFailingMove(@NotNull Move move) {
@@ -190,6 +218,7 @@ public class Player implements GroundEntity, UpEntity {
                 Move.PlayerState.EMPTY,
                 newGroundEntities,
                 newUpEntities,
+                initialMove.rupeesFound,
                 new Move.ActionLinkedElement(Action.CREATE_GROUND, initialMove.actions)
         );
         return callback.apply(newMove);
@@ -207,6 +236,12 @@ public class Player implements GroundEntity, UpEntity {
         }
         char[] newGroundEntities = initialMove.groundEntities.clone();
         char[] newUpEntities = initialMove.upEntities.clone();
+        boolean[] newRupeesFound = initialMove.rupeesFound;
+        int rupeeIndex = Arrays.binarySearch(level.rupeesIndexes(), targetPositionIndex);
+        if ((rupeeIndex >= 0) && (!newRupeesFound[rupeeIndex])) {
+            newRupeesFound = newRupeesFound.clone();
+            newRupeesFound[rupeeIndex] = true;
+        }
         newGroundEntities[targetPositionIndex] = ENTITY_GROUND_HOLE;
         postMove(level, initialMove, newGroundEntities, newUpEntities, -1);
         if (UpEntity.isEnemy(newUpEntities[initialPositionIndex])) {
@@ -216,7 +251,10 @@ public class Player implements GroundEntity, UpEntity {
                 initialMove.playerPositionIndex,
                 initialMove.playerDirection,
                 Move.fromGroundEntity(initialMove.groundEntities[targetPositionIndex]),
-                newGroundEntities, newUpEntities, new Move.ActionLinkedElement(Action.ABSORB_GROUND, initialMove.actions)
+                newGroundEntities,
+                newUpEntities,
+                newRupeesFound,
+                new Move.ActionLinkedElement(Action.ABSORB_GROUND, initialMove.actions)
         );
         return callback.apply(newMove);
 
@@ -242,6 +280,7 @@ public class Player implements GroundEntity, UpEntity {
                     initialMove.playerState,
                     newGroundEntities,
                     newUpEntities,
+                    initialMove.rupeesFound,
                     new Move.ActionLinkedElement(Action.OPEN_CHEST, initialMove.actions)
             );
             return callback.apply(newMove);
@@ -274,6 +313,7 @@ public class Player implements GroundEntity, UpEntity {
                     initialMove.playerState,
                     newGroundEntities,
                     newUpEntities,
+                    initialMove.rupeesFound,
                     new Move.ActionLinkedElement(action, initialMove.actions)
             );
             return callback.apply(newMove);
@@ -295,6 +335,7 @@ public class Player implements GroundEntity, UpEntity {
                         initialMove.playerState,
                         newGroundEntities,
                         newUpEntities,
+                        initialMove.rupeesFound,
                         new Move.ActionLinkedElement(action, initialMove.actions)
                 );
                 return callback.apply(newMove);
@@ -318,6 +359,7 @@ public class Player implements GroundEntity, UpEntity {
                         initialMove.playerState,
                         newGroundEntities,
                         newUpEntities,
+                        initialMove.rupeesFound,
                         new Move.ActionLinkedElement(action, initialMove.actions)
                 );
                 if (isFailingMove(newMove)) {
@@ -356,6 +398,7 @@ public class Player implements GroundEntity, UpEntity {
                             initialMove.playerState,
                             newGroundEntities,
                             newUpEntities,
+                            initialMove.rupeesFound,
                             new Move.ActionLinkedElement(action, initialMove.actions)
                     );
                     return callback.apply(newMove);
@@ -374,6 +417,7 @@ public class Player implements GroundEntity, UpEntity {
                             initialMove.playerState,
                             newGroundEntities,
                             newUpEntities,
+                            initialMove.rupeesFound,
                             new Move.ActionLinkedElement(action, initialMove.actions)
                     );
                     return callback.apply(newMove);
@@ -395,6 +439,7 @@ public class Player implements GroundEntity, UpEntity {
                             initialMove.playerState,
                             newGroundEntities,
                             newUpEntities,
+                            initialMove.rupeesFound,
                             new Move.ActionLinkedElement(action, initialMove.actions)
                     );
                     return callback.apply(newMove);
@@ -410,7 +455,10 @@ public class Player implements GroundEntity, UpEntity {
                             initialMove.playerPositionIndex,
                             direction,
                             initialMove.playerState,
-                            newGroundEntities, newUpEntities, new Move.ActionLinkedElement(action, initialMove.actions)
+                            newGroundEntities,
+                            newUpEntities,
+                            initialMove.rupeesFound,
+                            new Move.ActionLinkedElement(action, initialMove.actions)
                     );
                     return callback.apply(newMove);
                 }
@@ -507,12 +555,12 @@ public class Player implements GroundEntity, UpEntity {
                     newUpEntities[currentEntityIndex] = oppositeEnemy;
                 }
             }
-            char targeGroundEntity = newGroundEntities[targetPositionIndex];
-            switch (targeGroundEntity) {
+            char targetGroundEntity = newGroundEntities[targetPositionIndex];
+            switch (targetGroundEntity) {
                 case ENTITY_GROUND_HOLE -> {
                     newUpEntities[currentEntityIndex] = oppositeEnemy;
                 }
-                case ENTITY_GROUND_GROUND -> {
+                case ENTITY_GROUND_GROUND, ENTITY_GROUND_DOWNSTAIR -> {
                     newUpEntities[currentEntityIndex] = ENTITY_UP_EMPTY;
                     newUpEntities[targetPositionIndex] = currentEntity;
                 }
