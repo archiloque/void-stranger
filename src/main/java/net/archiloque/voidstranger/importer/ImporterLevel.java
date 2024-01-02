@@ -12,4 +12,8 @@ public record ImporterLevel(
     public java.util.stream.Stream<ImporterEntity> getAllEntities() {
         return entities().getAllEntities();
     }
+
+    public java.util.stream.Stream<ImporterEntity> getGroundEntities() {
+        return entities().getGroundEntities();
+    }
 }

@@ -28,9 +28,9 @@ public class App {
                     System.out.println("[" + actionString + "]");
                     Action action = Action.valueOf(actionString);
                     currentMove = Player.simulate(level, currentMove, action);
-
+                    Printer.printLevel(level, currentMove, System.out);
+                    System.out.println();
                 }
-                Printer.printPath(level, preparationResult.move(), currentMove);
             } else {
                 throw new IllegalArgumentException("");
             }

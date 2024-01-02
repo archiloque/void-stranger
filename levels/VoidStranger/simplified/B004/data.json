@@ -10,6 +10,47 @@
 	"customFields" : {},
 	"layers": [],
 	"entities": {
+		"Player_start_position": [
+			{
+				"id": "Player_start_position",
+				"iid": "f75f33a0-8990-11ee-8379-a99f403f8ddf",
+				"layer": "Special",
+				"x": 16,
+				"y": 48,
+				"width": 16,
+				"height": 16,
+				"color": 15251350,
+				"customFields": {
+					"Direction": "Down"
+				}
+			}
+		],
+		"Boulder": [
+			{
+				"id": "Boulder",
+				"iid": "14970f60-8990-11ee-8379-439db4dc70e8",
+				"layer": "Up",
+				"x": 112,
+				"y": 16,
+				"width": 16,
+				"height": 16,
+				"color": 1578021,
+				"customFields" : {}
+			}
+		],
+		"Chest": [
+			{
+				"id": "Chest",
+				"iid": "be0cabf0-8990-11ee-8379-bbf52bb718ba",
+				"layer": "Up",
+				"x": 160,
+				"y": 32,
+				"width": 16,
+				"height": 16,
+				"color": 1578021,
+				"customFields" : {}
+			}
+		],
 		"Ground": [
 			{
 				"id": "Ground",
@@ -255,17 +296,6 @@
 			},
 			{
 				"id": "Ground",
-				"iid": "da88ffe0-8990-11ee-8379-3ddc007e9b16",
-				"layer": "Ground",
-				"x": 80,
-				"y": 32,
-				"width": 16,
-				"height": 16,
-				"color": 15251350,
-				"customFields" : {}
-			},
-			{
-				"id": "Ground",
 				"iid": "db07a5c0-8990-11ee-8379-637229945c90",
 				"layer": "Ground",
 				"x": 64,
@@ -362,15 +392,24 @@
 				"height": 16,
 				"color": 15251350,
 				"customFields" : {}
-			}
-		],
-		"Chest": [
+			},
 			{
-				"id": "Chest",
-				"iid": "be0cabf0-8990-11ee-8379-bbf52bb718ba",
+				"id": "Ground",
+				"iid": "3428ebf0-8990-11ee-9530-f908cf0e2a0a",
 				"layer": "Ground",
 				"x": 160,
 				"y": 32,
+				"width": 16,
+				"height": 16,
+				"color": 15251350,
+				"customFields" : {}
+			},
+			{
+				"id": "Ground",
+				"iid": "35980c50-8990-11ee-9530-9db21df7a4cd",
+				"layer": "Ground",
+				"x": 112,
+				"y": 16,
 				"width": 16,
 				"height": 16,
 				"color": 15251350,
@@ -964,39 +1003,11 @@
 				"customFields" : {}
 			}
 		],
-		"Boulder": [
-			{
-				"id": "Boulder",
-				"iid": "14970f60-8990-11ee-8379-439db4dc70e8",
-				"layer": "Ground",
-				"x": 112,
-				"y": 16,
-				"width": 16,
-				"height": 16,
-				"color": 7552569,
-				"customFields" : {}
-			}
-		],
-		"Player_start_position": [
-			{
-				"id": "Player_start_position",
-				"iid": "f75f33a0-8990-11ee-8379-a99f403f8ddf",
-				"layer": "Items",
-				"x": 16,
-				"y": 48,
-				"width": 16,
-				"height": 16,
-				"color": 15251350,
-				"customFields": {
-					"Direction": "Down"
-				}
-			}
-		],
 		"Down_stairs": [
 			{
 				"id": "Down_stairs",
-				"iid": "fcc46d60-8990-11ee-8379-99e0357bc9d3",
-				"layer": "Items",
+				"iid": "3eab32e0-8990-11ee-9530-c53eb30f2964",
+				"layer": "Ground",
 				"x": 80,
 				"y": 32,
 				"width": 16,

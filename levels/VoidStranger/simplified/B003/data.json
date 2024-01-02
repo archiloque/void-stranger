@@ -10,6 +10,47 @@
 	"customFields" : {},
 	"layers": [],
 	"entities": {
+		"Player_start_position": [
+			{
+				"id": "Player_start_position",
+				"iid": "ee659950-8990-11ee-9b88-aff75843ae6c",
+				"layer": "Special",
+				"x": 112,
+				"y": 48,
+				"width": 16,
+				"height": 16,
+				"color": 15251350,
+				"customFields": {
+					"Direction": "Up"
+				}
+			}
+		],
+		"Boulder": [
+			{
+				"id": "Boulder",
+				"iid": "25c810d0-8990-11ee-9b88-1b3229e3b153",
+				"layer": "Up",
+				"x": 176,
+				"y": 16,
+				"width": 16,
+				"height": 16,
+				"color": 1578021,
+				"customFields" : {}
+			}
+		],
+		"Chest": [
+			{
+				"id": "Chest",
+				"iid": "ed5a43d0-8990-11ee-9b88-79ce2dcc56fc",
+				"layer": "Up",
+				"x": 176,
+				"y": 48,
+				"width": 16,
+				"height": 16,
+				"color": 1578021,
+				"customFields" : {}
+			}
+		],
 		"Wall": [
 			{
 				"id": "Wall",
@@ -749,19 +790,6 @@
 				"customFields" : {}
 			}
 		],
-		"Chest": [
-			{
-				"id": "Chest",
-				"iid": "ed5a43d0-8990-11ee-9b88-79ce2dcc56fc",
-				"layer": "Ground",
-				"x": 176,
-				"y": 48,
-				"width": 16,
-				"height": 16,
-				"color": 15251350,
-				"customFields" : {}
-			}
-		],
 		"Ground": [
 			{
 				"id": "Ground",
@@ -1172,49 +1200,32 @@
 			},
 			{
 				"id": "Ground",
-				"iid": "1a9c7e00-8990-11ee-879a-231a71b56a4c",
+				"iid": "ec9ce1b0-8990-11ee-9530-e35893ce1009",
 				"layer": "Ground",
-				"x": 32,
+				"x": 176,
 				"y": 48,
 				"width": 16,
 				"height": 16,
 				"color": 15251350,
 				"customFields" : {}
-			}
-		],
-		"Boulder": [
+			},
 			{
-				"id": "Boulder",
-				"iid": "25c810d0-8990-11ee-9b88-1b3229e3b153",
+				"id": "Ground",
+				"iid": "301c6460-8990-11ee-9530-ff706a45f2ee",
 				"layer": "Ground",
 				"x": 176,
 				"y": 16,
 				"width": 16,
 				"height": 16,
-				"color": 7552569,
-				"customFields" : {}
-			}
-		],
-		"Player_start_position": [
-			{
-				"id": "Player_start_position",
-				"iid": "ee659950-8990-11ee-9b88-aff75843ae6c",
-				"layer": "Items",
-				"x": 112,
-				"y": 48,
-				"width": 16,
-				"height": 16,
 				"color": 15251350,
-				"customFields": {
-					"Direction": "Up"
-				}
+				"customFields" : {}
 			}
 		],
 		"Down_stairs": [
 			{
 				"id": "Down_stairs",
-				"iid": "15da6210-8990-11ee-879a-f30b1be8145b",
-				"layer": "Items",
+				"iid": "2dcb2160-8990-11ee-9530-a33bbf89d536",
+				"layer": "Ground",
 				"x": 32,
 				"y": 48,
 				"width": 16,

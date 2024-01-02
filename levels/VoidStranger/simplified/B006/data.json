@@ -10,18 +10,35 @@
 	"customFields" : {},
 	"layers": [],
 	"entities": {
-		"Ground": [
+		"Player_start_position": [
 			{
-				"id": "Ground",
-				"iid": "2d537cc0-8990-11ee-8379-3b747db3d823",
-				"layer": "Ground",
-				"x": 16,
-				"y": 16,
+				"id": "Player_start_position",
+				"iid": "5165a610-8990-11ee-8379-df8b3151b24c",
+				"layer": "Special",
+				"x": 96,
+				"y": 64,
 				"width": 16,
 				"height": 16,
 				"color": 15251350,
+				"customFields": {
+					"Direction": "Down"
+				}
+			}
+		],
+		"Chest": [
+			{
+				"id": "Chest",
+				"iid": "bb33d490-8990-11ee-8379-11db07825556",
+				"layer": "Up",
+				"x": 64,
+				"y": 48,
+				"width": 16,
+				"height": 16,
+				"color": 1578021,
 				"customFields" : {}
-			},
+			}
+		],
+		"Ground": [
 			{
 				"id": "Ground",
 				"iid": "2d8b55a0-8990-11ee-8379-13f663727be5",
@@ -182,6 +199,17 @@
 				"layer": "Ground",
 				"x": 16,
 				"y": 80,
+				"width": 16,
+				"height": 16,
+				"color": 15251350,
+				"customFields" : {}
+			},
+			{
+				"id": "Ground",
+				"iid": "6de5a720-8990-11ee-9530-2b3195d1bed8",
+				"layer": "Ground",
+				"x": 64,
+				"y": 48,
 				"width": 16,
 				"height": 16,
 				"color": 15251350,
@@ -940,39 +968,11 @@
 				"customFields" : {}
 			}
 		],
-		"Chest": [
-			{
-				"id": "Chest",
-				"iid": "bb33d490-8990-11ee-8379-11db07825556",
-				"layer": "Ground",
-				"x": 64,
-				"y": 48,
-				"width": 16,
-				"height": 16,
-				"color": 15251350,
-				"customFields" : {}
-			}
-		],
-		"Player_start_position": [
-			{
-				"id": "Player_start_position",
-				"iid": "5165a610-8990-11ee-8379-df8b3151b24c",
-				"layer": "Items",
-				"x": 96,
-				"y": 64,
-				"width": 16,
-				"height": 16,
-				"color": 15251350,
-				"customFields": {
-					"Direction": "Down"
-				}
-			}
-		],
 		"Down_stairs": [
 			{
 				"id": "Down_stairs",
-				"iid": "54d2e060-8990-11ee-8379-dd817e732e5c",
-				"layer": "Items",
+				"iid": "74702700-8990-11ee-9530-2d1272546e18",
+				"layer": "Ground",
 				"x": 16,
 				"y": 16,
 				"width": 16,

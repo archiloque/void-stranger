@@ -8,31 +8,36 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static net.archiloque.voidstranger.GroundEntity.*;
+
 @ToString
 @EqualsAndHashCode(cacheStrategy = EqualsAndHashCode.CacheStrategy.LAZY, callSuper = false, doNotUseGetters = true)
 public final class Move {
-    @NotNull
-    final Position playerPosition;
+    final int playerPositionIndex;
     @NotNull
     final Direction playerDirection;
     @NotNull
     final PlayerState playerState;
-    final char @NotNull [] entities;
+    final char @NotNull [] groundEntities;
+    final char @NotNull [] upEntities;
 
     @Nullable
     @EqualsAndHashCode.Exclude
     final ActionLinkedElement actions;
 
     public Move(
-            @NotNull Position playerPosition,
+            int playerPositionIndex,
             @NotNull Direction playerDirection,
             @NotNull PlayerState playerState,
-            char @NotNull [] entities,
-            @Nullable ActionLinkedElement actions) {
-        this.playerPosition = playerPosition;
+            char @NotNull [] groundEntities,
+            char @NotNull [] upEntities,
+            @Nullable ActionLinkedElement actions
+    ) {
+        this.playerPositionIndex = playerPositionIndex;
         this.playerDirection = playerDirection;
         this.playerState = playerState;
-        this.entities = entities;
+        this.groundEntities = groundEntities;
+        this.upEntities = upEntities;
         this.actions = actions;
     }
 
@@ -47,9 +52,10 @@ public final class Move {
     }
 
     public enum PlayerState {
-        STANDARD('!'),
-        HOLD_GROUND(CharEntity.ENTITY_GROUND),
-        HOLD_GLASS(CharEntity.ENTITY_GLASS),
+        EMPTY('!'),
+        HOLD_GROUND(ENTITY_GROUND_GROUND),
+        HOLD_GLASS(GroundEntity.ENTITY_GROUND_GLASS),
+        HOLD_DOWNSTAIR(ENTITY_GROUND_DOWNSTAIR),
         ;
 
         public final char entity;
@@ -59,6 +65,20 @@ public final class Move {
         }
     }
 
+    public static PlayerState fromGroundEntity(char groundEntity) {
+        switch (groundEntity) {
+            case ENTITY_GROUND_GROUND -> {
+                return PlayerState.HOLD_GROUND;
+            }
+            case ENTITY_GROUND_GLASS -> {
+                return PlayerState.HOLD_GLASS;
+            }
+            case ENTITY_GROUND_DOWNSTAIR -> {
+                return PlayerState.HOLD_DOWNSTAIR;
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + groundEntity);
+        }
+    }
 
 
     public record ActionLinkedElement(@NotNull Action action, @Nullable ActionLinkedElement parent) {

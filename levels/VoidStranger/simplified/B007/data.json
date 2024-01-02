@@ -10,6 +10,56 @@
 	"customFields" : {},
 	"layers": [],
 	"entities": {
+		"Player_start_position": [
+			{
+				"id": "Player_start_position",
+				"iid": "4bf31b80-8990-11ee-879a-8fe8ea541a5c",
+				"layer": "Special",
+				"x": 16,
+				"y": 16,
+				"width": 16,
+				"height": 16,
+				"color": 15251350,
+				"customFields": {
+					"Direction": "Right"
+				}
+			}
+		],
+		"Boulder": [
+			{
+				"id": "Boulder",
+				"iid": "ee81c7b0-8990-11ee-879a-11c3eff13190",
+				"layer": "Up",
+				"x": 144,
+				"y": 16,
+				"width": 16,
+				"height": 16,
+				"color": 1578021,
+				"customFields" : {}
+			},
+			{
+				"id": "Boulder",
+				"iid": "f00c1130-8990-11ee-879a-c1bb1290acb5",
+				"layer": "Up",
+				"x": 144,
+				"y": 80,
+				"width": 16,
+				"height": 16,
+				"color": 1578021,
+				"customFields" : {}
+			},
+			{
+				"id": "Boulder",
+				"iid": "8b0ce110-8990-11ee-9530-05b63c9c22ad",
+				"layer": "Up",
+				"x": 48,
+				"y": 80,
+				"width": 16,
+				"height": 16,
+				"color": 1578021,
+				"customFields" : {}
+			}
+		],
 		"Wall": [
 			{
 				"id": "Wall",
@@ -749,6 +799,28 @@
 				"height": 16,
 				"color": 15251350,
 				"customFields" : {}
+			},
+			{
+				"id": "Ground",
+				"iid": "7b2d9dc0-8990-11ee-9530-47e8cabc4571",
+				"layer": "Ground",
+				"x": 144,
+				"y": 16,
+				"width": 16,
+				"height": 16,
+				"color": 15251350,
+				"customFields" : {}
+			},
+			{
+				"id": "Ground",
+				"iid": "7cd70800-8990-11ee-9530-c11ef73e08e8",
+				"layer": "Ground",
+				"x": 144,
+				"y": 80,
+				"width": 16,
+				"height": 16,
+				"color": 15251350,
+				"customFields" : {}
 			}
 		],
 		"Hole": [
@@ -775,67 +847,17 @@
 				"customFields" : {}
 			}
 		],
-		"Boulder": [
-			{
-				"id": "Boulder",
-				"iid": "ee81c7b0-8990-11ee-879a-11c3eff13190",
-				"layer": "Ground",
-				"x": 144,
-				"y": 16,
-				"width": 16,
-				"height": 16,
-				"color": 7552569,
-				"customFields" : {}
-			},
-			{
-				"id": "Boulder",
-				"iid": "f00c1130-8990-11ee-879a-c1bb1290acb5",
-				"layer": "Ground",
-				"x": 144,
-				"y": 80,
-				"width": 16,
-				"height": 16,
-				"color": 7552569,
-				"customFields" : {}
-			},
-			{
-				"id": "Boulder",
-				"iid": "fe33f5a0-8990-11ee-879a-b3de9e6277c7",
-				"layer": "Ground",
-				"x": 48,
-				"y": 80,
-				"width": 16,
-				"height": 16,
-				"color": 7552569,
-				"customFields" : {}
-			}
-		],
 		"Down_stairs": [
 			{
 				"id": "Down_stairs",
-				"iid": "6fc26c40-8990-11ee-879a-bfacbcdfac51",
-				"layer": "Items",
+				"iid": "86c4d720-8990-11ee-9530-59bfc039b700",
+				"layer": "Ground",
 				"x": 48,
 				"y": 80,
 				"width": 16,
 				"height": 16,
 				"color": 15251350,
 				"customFields" : {}
-			}
-		],
-		"Player_start_position": [
-			{
-				"id": "Player_start_position",
-				"iid": "4bf31b80-8990-11ee-879a-8fe8ea541a5c",
-				"layer": "Items",
-				"x": 16,
-				"y": 16,
-				"width": 16,
-				"height": 16,
-				"color": 15251350,
-				"customFields": {
-					"Direction": "Right"
-				}
 			}
 		]
 	}

@@ -10,6 +10,100 @@
 	"customFields" : {},
 	"layers": [],
 	"entities": {
+		"Player_start_position": [
+			{
+				"id": "Player_start_position",
+				"iid": "3c115540-8990-11ee-879a-e1300532f95f",
+				"layer": "Special",
+				"x": 32,
+				"y": 80,
+				"width": 16,
+				"height": 16,
+				"color": 15251350,
+				"customFields": {
+					"Direction": "Down"
+				}
+			}
+		],
+		"Boulder": [
+			{
+				"id": "Boulder",
+				"iid": "2ba08050-8990-11ee-879a-b1be08dc948e",
+				"layer": "Up",
+				"x": 16,
+				"y": 48,
+				"width": 16,
+				"height": 16,
+				"color": 1578021,
+				"customFields" : {}
+			},
+			{
+				"id": "Boulder",
+				"iid": "2be52a70-8990-11ee-879a-ddfbadb74d77",
+				"layer": "Up",
+				"x": 32,
+				"y": 48,
+				"width": 16,
+				"height": 16,
+				"color": 1578021,
+				"customFields" : {}
+			},
+			{
+				"id": "Boulder",
+				"iid": "2c2c4590-8990-11ee-879a-3527e1d1b853",
+				"layer": "Up",
+				"x": 48,
+				"y": 48,
+				"width": 16,
+				"height": 16,
+				"color": 1578021,
+				"customFields" : {}
+			},
+			{
+				"id": "Boulder",
+				"iid": "2d5ada80-8990-11ee-879a-6155779303e2",
+				"layer": "Up",
+				"x": 144,
+				"y": 64,
+				"width": 16,
+				"height": 16,
+				"color": 1578021,
+				"customFields" : {}
+			},
+			{
+				"id": "Boulder",
+				"iid": "2d9e4c20-8990-11ee-879a-a94d9b6ad800",
+				"layer": "Up",
+				"x": 128,
+				"y": 64,
+				"width": 16,
+				"height": 16,
+				"color": 1578021,
+				"customFields" : {}
+			},
+			{
+				"id": "Boulder",
+				"iid": "2e78f4b0-8990-11ee-879a-cfa8d61f7065",
+				"layer": "Up",
+				"x": 128,
+				"y": 96,
+				"width": 16,
+				"height": 16,
+				"color": 1578021,
+				"customFields" : {}
+			},
+			{
+				"id": "Boulder",
+				"iid": "2ec91080-8990-11ee-879a-313af71c6a40",
+				"layer": "Up",
+				"x": 144,
+				"y": 96,
+				"width": 16,
+				"height": 16,
+				"color": 1578021,
+				"customFields" : {}
+			}
+		],
 		"Wall": [
 			{
 				"id": "Wall",
@@ -575,85 +669,6 @@
 				"customFields" : {}
 			}
 		],
-		"Boulder": [
-			{
-				"id": "Boulder",
-				"iid": "2ba08050-8990-11ee-879a-b1be08dc948e",
-				"layer": "Ground",
-				"x": 16,
-				"y": 48,
-				"width": 16,
-				"height": 16,
-				"color": 7552569,
-				"customFields" : {}
-			},
-			{
-				"id": "Boulder",
-				"iid": "2be52a70-8990-11ee-879a-ddfbadb74d77",
-				"layer": "Ground",
-				"x": 32,
-				"y": 48,
-				"width": 16,
-				"height": 16,
-				"color": 7552569,
-				"customFields" : {}
-			},
-			{
-				"id": "Boulder",
-				"iid": "2c2c4590-8990-11ee-879a-3527e1d1b853",
-				"layer": "Ground",
-				"x": 48,
-				"y": 48,
-				"width": 16,
-				"height": 16,
-				"color": 7552569,
-				"customFields" : {}
-			},
-			{
-				"id": "Boulder",
-				"iid": "2d5ada80-8990-11ee-879a-6155779303e2",
-				"layer": "Ground",
-				"x": 144,
-				"y": 64,
-				"width": 16,
-				"height": 16,
-				"color": 7552569,
-				"customFields" : {}
-			},
-			{
-				"id": "Boulder",
-				"iid": "2d9e4c20-8990-11ee-879a-a94d9b6ad800",
-				"layer": "Ground",
-				"x": 128,
-				"y": 64,
-				"width": 16,
-				"height": 16,
-				"color": 7552569,
-				"customFields" : {}
-			},
-			{
-				"id": "Boulder",
-				"iid": "2e78f4b0-8990-11ee-879a-cfa8d61f7065",
-				"layer": "Ground",
-				"x": 128,
-				"y": 96,
-				"width": 16,
-				"height": 16,
-				"color": 7552569,
-				"customFields" : {}
-			},
-			{
-				"id": "Boulder",
-				"iid": "2ec91080-8990-11ee-879a-313af71c6a40",
-				"layer": "Ground",
-				"x": 144,
-				"y": 96,
-				"width": 16,
-				"height": 16,
-				"color": 7552569,
-				"customFields" : {}
-			}
-		],
 		"Ground": [
 			{
 				"id": "Ground",
@@ -877,17 +892,6 @@
 			},
 			{
 				"id": "Ground",
-				"iid": "38cb2af0-8990-11ee-879a-53470b147aac",
-				"layer": "Ground",
-				"x": 128,
-				"y": 80,
-				"width": 16,
-				"height": 16,
-				"color": 15251350,
-				"customFields" : {}
-			},
-			{
-				"id": "Ground",
 				"iid": "393d9bd0-8990-11ee-879a-29223ac3594a",
 				"layer": "Ground",
 				"x": 112,
@@ -896,28 +900,90 @@
 				"height": 16,
 				"color": 15251350,
 				"customFields" : {}
-			}
-		],
-		"Player_start_position": [
+			},
 			{
-				"id": "Player_start_position",
-				"iid": "3c115540-8990-11ee-879a-e1300532f95f",
-				"layer": "Items",
-				"x": 32,
-				"y": 80,
+				"id": "Ground",
+				"iid": "93d9fdf0-8990-11ee-9530-a9d89c774fa6",
+				"layer": "Ground",
+				"x": 48,
+				"y": 48,
 				"width": 16,
 				"height": 16,
 				"color": 15251350,
-				"customFields": {
-					"Direction": "Down"
-				}
+				"customFields" : {}
+			},
+			{
+				"id": "Ground",
+				"iid": "942b7950-8990-11ee-9530-09f0d1933ebd",
+				"layer": "Ground",
+				"x": 32,
+				"y": 48,
+				"width": 16,
+				"height": 16,
+				"color": 15251350,
+				"customFields" : {}
+			},
+			{
+				"id": "Ground",
+				"iid": "94902e90-8990-11ee-9530-79b6cf2ac369",
+				"layer": "Ground",
+				"x": 16,
+				"y": 48,
+				"width": 16,
+				"height": 16,
+				"color": 15251350,
+				"customFields" : {}
+			},
+			{
+				"id": "Ground",
+				"iid": "9714b690-8990-11ee-9530-afb7c8e07a74",
+				"layer": "Ground",
+				"x": 144,
+				"y": 64,
+				"width": 16,
+				"height": 16,
+				"color": 15251350,
+				"customFields" : {}
+			},
+			{
+				"id": "Ground",
+				"iid": "9768a2f0-8990-11ee-9530-fb042a03c99a",
+				"layer": "Ground",
+				"x": 128,
+				"y": 64,
+				"width": 16,
+				"height": 16,
+				"color": 15251350,
+				"customFields" : {}
+			},
+			{
+				"id": "Ground",
+				"iid": "98064280-8990-11ee-9530-151701645bc3",
+				"layer": "Ground",
+				"x": 128,
+				"y": 96,
+				"width": 16,
+				"height": 16,
+				"color": 15251350,
+				"customFields" : {}
+			},
+			{
+				"id": "Ground",
+				"iid": "98565e50-8990-11ee-9530-935418ac12bf",
+				"layer": "Ground",
+				"x": 144,
+				"y": 96,
+				"width": 16,
+				"height": 16,
+				"color": 15251350,
+				"customFields" : {}
 			}
 		],
 		"Down_stairs": [
 			{
 				"id": "Down_stairs",
-				"iid": "415153c0-8990-11ee-879a-df4961ee9d09",
-				"layer": "Items",
+				"iid": "9f05f260-8990-11ee-9530-4d9adfb5827c",
+				"layer": "Ground",
 				"x": 128,
 				"y": 80,
 				"width": 16,

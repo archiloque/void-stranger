@@ -1,3 +1,5 @@
+LEFT, LEFT, LEFT, LEFT, UP, OPEN_CHEST, LEFT, ABSORB_GROUND, DOWN, LEFT, CREATE_GROUND, LEFT, LEFT, LEFT
+
 LEFT x 4
 UP
 OPEN_CHEST
@@ -8,137 +10,137 @@ LEFT
 CREATE_GROUND
 LEFT x 3
 
-#xxxxxxxxxxxx#
-#xxxxxxxxxxxx#
-#xxxxxxxxxxxx#
-#   x  C     #
-#   x      @ #
-# ↓ x        #
+#□□□□□□□□□□□□#
+#□□□□□□□□□□□□#
+#□□□□□□□□□□□□#
+#   □  C     #
+#   □      @ #
+# ↓ □        #
 ##############
 
 LEFT
-#xxxxxxxxxxxx#
-#xxxxxxxxxxxx#
-#xxxxxxxxxxxx#
-#   x  C     #
-#   x     @  #
-# ↓ x        #
+#□□□□□□□□□□□□#
+#□□□□□□□□□□□□#
+#□□□□□□□□□□□□#
+#   □  C     #
+#   □     @  #
+# ↓ □        #
 ##############
 
 LEFT
-#xxxxxxxxxxxx#
-#xxxxxxxxxxxx#
-#xxxxxxxxxxxx#
-#   x  C     #
-#   x    @   #
-# ↓ x        #
+#□□□□□□□□□□□□#
+#□□□□□□□□□□□□#
+#□□□□□□□□□□□□#
+#   □  C     #
+#   □    @   #
+# ↓ □        #
 ##############
 
 LEFT
-#xxxxxxxxxxxx#
-#xxxxxxxxxxxx#
-#xxxxxxxxxxxx#
-#   x  C     #
-#   x   @    #
-# ↓ x        #
+#□□□□□□□□□□□□#
+#□□□□□□□□□□□□#
+#□□□□□□□□□□□□#
+#   □  C     #
+#   □   @    #
+# ↓ □        #
 ##############
 
 LEFT
-#xxxxxxxxxxxx#
-#xxxxxxxxxxxx#
-#xxxxxxxxxxxx#
-#   x  C     #
-#   x  @     #
-# ↓ x        #
+#□□□□□□□□□□□□#
+#□□□□□□□□□□□□#
+#□□□□□□□□□□□□#
+#   □  C     #
+#   □  @     #
+# ↓ □        #
 ##############
 
 UP
-#xxxxxxxxxxxx#
-#xxxxxxxxxxxx#
-#xxxxxxxxxxxx#
-#   x  C     #
-#   x  @     #
-# ↓ x        #
+#□□□□□□□□□□□□#
+#□□□□□□□□□□□□#
+#□□□□□□□□□□□□#
+#   □  C     #
+#   □  @     #
+# ↓ □        #
 ##############
 
 OPEN_CHEST
-#xxxxxxxxxxxx#
-#xxxxxxxxxxxx#
-#xxxxxxxxxxxx#
-#   x  c     #
-#   x  @     #
-# ↓ x        #
+#□□□□□□□□□□□□#
+#□□□□□□□□□□□□#
+#□□□□□□□□□□□□#
+#   □  c     #
+#   □  @     #
+# ↓ □        #
 ##############
 
 LEFT
-#xxxxxxxxxxxx#
-#xxxxxxxxxxxx#
-#xxxxxxxxxxxx#
-#   x  c     #
-#   x @      #
-# ↓ x        #
+#□□□□□□□□□□□□#
+#□□□□□□□□□□□□#
+#□□□□□□□□□□□□#
+#   □  c     #
+#   □ @      #
+# ↓ □        #
 ##############
 
 ABSORB_GROUND
-#xxxxxxxxxxxx#
-#xxxxxxxxxxxx#
-#xxxxxxxxxxxx#
-#   x  c     #
-#   xx@      #
-# ↓ x        #
+#□□□□□□□□□□□□#
+#□□□□□□□□□□□□#
+#□□□□□□□□□□□□#
+#   □  c     #
+#   □□@      #
+# ↓ □        #
 ##############
 
 DOWN
-#xxxxxxxxxxxx#
-#xxxxxxxxxxxx#
-#xxxxxxxxxxxx#
-#   x  c     #
-#   xx       #
-# ↓ x @      #
+#□□□□□□□□□□□□#
+#□□□□□□□□□□□□#
+#□□□□□□□□□□□□#
+#   □  c     #
+#   □□       #
+# ↓ □ @      #
 ##############
 
 LEFT
-#xxxxxxxxxxxx#
-#xxxxxxxxxxxx#
-#xxxxxxxxxxxx#
-#   x  c     #
-#   xx       #
-# ↓ x@       #
+#□□□□□□□□□□□□#
+#□□□□□□□□□□□□#
+#□□□□□□□□□□□□#
+#   □  c     #
+#   □□       #
+# ↓ □@       #
 ##############
 
 CREATE_GROUND
-#xxxxxxxxxxxx#
-#xxxxxxxxxxxx#
-#xxxxxxxxxxxx#
-#   x  c     #
-#   xx       #
+#□□□□□□□□□□□□#
+#□□□□□□□□□□□□#
+#□□□□□□□□□□□□#
+#   □  c     #
+#   □□       #
 # ↓  @       #
 ##############
 
 LEFT
-#xxxxxxxxxxxx#
-#xxxxxxxxxxxx#
-#xxxxxxxxxxxx#
-#   x  c     #
-#   xx       #
+#□□□□□□□□□□□□#
+#□□□□□□□□□□□□#
+#□□□□□□□□□□□□#
+#   □  c     #
+#   □□       #
 # ↓ @        #
 ##############
 
 LEFT
-#xxxxxxxxxxxx#
-#xxxxxxxxxxxx#
-#xxxxxxxxxxxx#
-#   x  c     #
-#   xx       #
+#□□□□□□□□□□□□#
+#□□□□□□□□□□□□#
+#□□□□□□□□□□□□#
+#   □  c     #
+#   □□       #
 # ↓@         #
 ##############
 
 LEFT
-#xxxxxxxxxxxx#
-#xxxxxxxxxxxx#
-#xxxxxxxxxxxx#
-#   x  c     #
-#   xx       #
+#□□□□□□□□□□□□#
+#□□□□□□□□□□□□#
+#□□□□□□□□□□□□#
+#   □  c     #
+#   □□       #
 # @          #
 ##############
 

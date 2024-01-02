@@ -1,3 +1,5 @@
+RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT
+
 RIGHT x 9
 
 ##############

@@ -1,3 +1,5 @@
+LEFT, LEFT, LEFT, LEFT, ABSORB_GROUND, CREATE_GROUND, LEFT, LEFT, UP, UP, UP
+
 LEFT x 4
 ABSORB_GROUND
 CREATE_GROUND
@@ -58,7 +60,7 @@ ABSORB_GROUND
 ######↓#######
 ###### #######
 ###### #######
-#     ⇐x@    #
+#     ⇐□@    #
 ####### ######
 ####### ######
 ##############

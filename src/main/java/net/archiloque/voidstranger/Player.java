@@ -3,14 +3,11 @@ package net.archiloque.voidstranger;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.util.Deque;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
-public class Player implements CharEntity {
+public class Player implements GroundEntity, UpEntity {
 
     public static final Position DELTA_UP = new Position(0, -1);
     public static final Position DELTA_DOWN = new Position(0, 1);
@@ -52,14 +49,18 @@ public class Player implements CharEntity {
             }
             default -> throw new IllegalStateException("Unexpected value: " + action);
         }
-        Action lastAction = result.get().actions.action();
-        if (!lastAction.equals(action)) {
-            throw new IllegalArgumentException(lastAction.name() + " should be " + action.name());
+        Move resultMove = result.get();
+        if (resultMove == null) {
+            throw new IllegalArgumentException("No result move, expected was " + action.name());
         }
-        return result.get();
+        Action lastAction = resultMove.actions.action();
+        if (!lastAction.equals(action)) {
+            throw new IllegalArgumentException("Current move is " + lastAction.name() + " but is expected to be " + action.name());
+        }
+        return resultMove;
     }
 
-    public static void play(Preparer.PreparationResult preparationResult) throws IOException {
+    public static void play(Preparer.PreparationResult preparationResult) {
         Deque<Move> currentMoves = new LinkedList<>();
         Set<Move> knownMoves = new HashSet<>();
         currentMoves.addFirst(preparationResult.move());
@@ -89,23 +90,23 @@ public class Player implements CharEntity {
     }
 
     private static boolean isWinningMove(@NotNull Level level, @NotNull Move move) {
-        if (!move.playerPosition.equals(level.downStairsPosition())) {
+        if (!(move.groundEntities[move.playerPositionIndex] == ENTITY_GROUND_DOWNSTAIR)) {
             return false;
         }
-        for (char entity : move.entities) {
-            if (entity == ENTITY_CHEST_CLOSED) {
+        for (char entity : move.upEntities) {
+            if (entity == ENTITY_UP_CHEST_CLOSED) {
                 return false;
             }
         }
         return true;
     }
 
-    private static boolean isFailingMove(@NotNull Level level, @NotNull Move move) {
-        if (!move.playerPosition.equals(level.downStairsPosition())) {
+    private static boolean isFailingMove(@NotNull Move move) {
+        if (move.groundEntities[move.playerPositionIndex] != ENTITY_GROUND_DOWNSTAIR) {
             return false;
         }
-        for (char entity : move.entities) {
-            if (entity == ENTITY_CHEST_CLOSED) {
+        for (char entity : move.upEntities) {
+            if (entity == ENTITY_UP_CHEST_CLOSED) {
                 return true;
             }
         }
@@ -139,86 +140,108 @@ public class Player implements CharEntity {
 
     private static boolean action(@NotNull Level level, @NotNull Move initialMove, @NotNull Function<Move, Boolean> callback) {
         Position delta = initialMove.playerDirection.delta;
-        Position targetPosition = initialMove.playerPosition.add(delta);
+        Position targetPosition = level.positions()[initialMove.playerPositionIndex].add(delta);
         int targetPositionIndex = level.positionIndex(targetPosition);
         if (targetPositionIndex < 0) {
             return false;
         }
-        char targetEntity = initialMove.entities[targetPositionIndex];
-        int initialPositionIndex = level.positionIndex(initialMove.playerPosition);
-        switch (targetEntity) {
-            case ENTITY_BOULDER, ENTITY_CHEST_OPEN, ENTITY_ENEMY_FACING_UP, ENTITY_ENEMY_FACING_DOWN, ENTITY_ENEMY_FACING_LEFT, ENTITY_ENEMY_FACING_RIGHT -> {
+        int initialPositionIndex = initialMove.playerPositionIndex;
+
+        char upTargetEntity = initialMove.upEntities[targetPositionIndex];
+        switch (upTargetEntity) {
+            case ENTITY_UP_BOULDER, ENTITY_UP_CHEST_OPEN, ENTITY_UP_ENEMY_FACING_UP, ENTITY_UP_ENEMY_FACING_DOWN, ENTITY_UP_ENEMY_FACING_LEFT, ENTITY_UP_ENEMY_FACING_RIGHT -> {
                 return false;
             }
-            case ENTITY_CHEST_CLOSED -> {
+            case ENTITY_UP_CHEST_CLOSED -> {
                 return actionChestClosed(initialMove, targetPositionIndex, initialPositionIndex, callback);
             }
-            case ENTITY_GROUND -> {
-                return actionGround(level, initialMove, targetPositionIndex, initialPositionIndex, callback);
-            }
-            case ENTITY_HOLE -> {
-                return actionHole(level, initialMove, targetPositionIndex, initialPositionIndex, callback);
-            }
-            default -> throw new IllegalStateException("Unexpected value: " + targetEntity);
         }
+
+        char groundTargetEntity = initialMove.groundEntities[targetPositionIndex];
+        switch (groundTargetEntity) {
+            case ENTITY_GROUND_GROUND, ENTITY_GROUND_DOWNSTAIR, ENTITY_GROUND_GLASS -> {
+                return actionAbsorbGround(level, initialMove, targetPositionIndex, initialPositionIndex, callback);
+            }
+            case ENTITY_GROUND_HOLE -> {
+                return actionCreateGround(level, initialMove, targetPositionIndex, initialPositionIndex, callback);
+            }
+        }
+        throw new IllegalStateException("Unexpected value: [" + upTargetEntity + "] [" + groundTargetEntity + "]");
     }
 
-    private static boolean actionHole(@NotNull Level level, @NotNull Move initialMove, int targetPositionIndex, int initialPositionIndex, @NotNull Function<Move, Boolean> callback) {
-        if ((initialMove.playerState == Move.PlayerState.HOLD_GROUND) || (initialMove.playerState == Move.PlayerState.HOLD_GLASS)) {
-            char[] newEntities = initialMove.entities.clone();
-            newEntities[targetPositionIndex] = initialMove.playerState.entity;
-            postMove(level, initialMove, newEntities, -1);
-            if (CharEntity.isEnemy(newEntities[initialPositionIndex])) {
-                return false;
-            }
-            Move newMove = new Move(
-                    initialMove.playerPosition,
-                    initialMove.playerDirection,
-                    Move.PlayerState.STANDARD,
-                    newEntities,
-                    new Move.ActionLinkedElement(Action.CREATE_GROUND, initialMove.actions)
-            );
-            return callback.apply(newMove);
-        } else {
+    private static boolean actionCreateGround(@NotNull Level level,
+                                              @NotNull Move initialMove,
+                                              int targetPositionIndex,
+                                              int initialPositionIndex,
+                                              @NotNull Function<Move, Boolean> callback) {
+        if (initialMove.playerState == Move.PlayerState.EMPTY) {
             return false;
         }
-    }
-
-    private static boolean actionGround(@NotNull Level level, @NotNull Move initialMove, int targetPositionIndex, int initialPositionIndex, @NotNull Function<Move, Boolean> callback) {
-        if (initialMove.playerState == Move.PlayerState.STANDARD) {
-            char[] newEntities = initialMove.entities.clone();
-            newEntities[targetPositionIndex] = ENTITY_HOLE;
-            postMove(level, initialMove, newEntities, -1);
-            if (CharEntity.isEnemy(newEntities[initialPositionIndex])) {
-                return false;
-            }
-            Move newMove = new Move(
-                    initialMove.playerPosition,
-                    initialMove.playerDirection,
-                    Move.PlayerState.HOLD_GROUND,
-                    newEntities,
-                    new Move.ActionLinkedElement(Action.ABSORB_GROUND, initialMove.actions)
-            );
-            return callback.apply(newMove);
-        } else {
+        char[] newGroundEntities = initialMove.groundEntities.clone();
+        char[] newUpEntities = initialMove.upEntities.clone();
+        newGroundEntities[targetPositionIndex] = initialMove.playerState.entity;
+        postMove(level, initialMove, newGroundEntities, newUpEntities, -1);
+        if (UpEntity.isEnemy(newUpEntities[initialPositionIndex])) {
             return false;
         }
+        Move newMove = new Move(
+                initialMove.playerPositionIndex,
+                initialMove.playerDirection,
+                Move.PlayerState.EMPTY,
+                newGroundEntities,
+                newUpEntities,
+                new Move.ActionLinkedElement(Action.CREATE_GROUND, initialMove.actions)
+        );
+        return callback.apply(newMove);
+
     }
 
-    private static boolean actionChestClosed(@NotNull Move initialMove, int targetPositionIndex, int initialPositionIndex, @NotNull Function<Move, Boolean> callback) {
+    private static boolean actionAbsorbGround(
+            @NotNull Level level,
+            @NotNull Move initialMove,
+            int targetPositionIndex,
+            int initialPositionIndex,
+            @NotNull Function<Move, Boolean> callback) {
+        if (initialMove.playerState != Move.PlayerState.EMPTY) {
+            return false;
+        }
+        char[] newGroundEntities = initialMove.groundEntities.clone();
+        char[] newUpEntities = initialMove.upEntities.clone();
+        newGroundEntities[targetPositionIndex] = ENTITY_GROUND_HOLE;
+        postMove(level, initialMove, newGroundEntities, newUpEntities, -1);
+        if (UpEntity.isEnemy(newUpEntities[initialPositionIndex])) {
+            return false;
+        }
+        Move newMove = new Move(
+                initialMove.playerPositionIndex,
+                initialMove.playerDirection,
+                Move.fromGroundEntity(initialMove.groundEntities[targetPositionIndex]),
+                newGroundEntities, newUpEntities, new Move.ActionLinkedElement(Action.ABSORB_GROUND, initialMove.actions)
+        );
+        return callback.apply(newMove);
+
+    }
+
+    private static boolean actionChestClosed(
+            @NotNull Move initialMove,
+            int targetPositionIndex,
+            int initialPositionIndex,
+            @NotNull Function<Move, Boolean> callback) {
         if (!initialMove.playerDirection.equals(Direction.Up)) {
             return false;
         } else {
-            char[] newEntities = initialMove.entities.clone();
-            newEntities[targetPositionIndex] = ENTITY_CHEST_OPEN;
-            if (CharEntity.isEnemy(newEntities[initialPositionIndex])) {
+            char[] newGroundEntities = initialMove.groundEntities.clone();
+            char[] newUpEntities = initialMove.upEntities.clone();
+            newUpEntities[targetPositionIndex] = ENTITY_UP_CHEST_OPEN;
+            if (UpEntity.isEnemy(newUpEntities[initialPositionIndex])) {
                 return false;
             }
             Move newMove = new Move(
-                    initialMove.playerPosition,
+                    initialMove.playerPositionIndex,
                     initialMove.playerDirection,
                     initialMove.playerState,
-                    newEntities,
+                    newGroundEntities,
+                    newUpEntities,
                     new Move.ActionLinkedElement(Action.OPEN_CHEST, initialMove.actions)
             );
             return callback.apply(newMove);
@@ -232,71 +255,81 @@ public class Player implements CharEntity {
             @NotNull Position delta,
             @NotNull Action action,
             @NotNull Function<Move, Boolean> callback) {
-        int initialPositionIndex = level.positionIndex(initialMove.playerPosition);
-        char[] newEntities = initialMove.entities.clone();
+        int initialPositionIndex = initialMove.playerPositionIndex;
+        char[] newGroundEntities = initialMove.groundEntities.clone();
+        char[] newUpEntities = initialMove.upEntities.clone();
 
-        Position targetPosition = initialMove.playerPosition.add(delta);
+        Position targetPosition = level.positions()[initialMove.playerPositionIndex].add(delta);
         int targetPositionIndex = level.positionIndex(targetPosition);
         if (targetPositionIndex < 0) {
-            postMove(level, initialMove, newEntities, -1);
-            if (CharEntity.isEnemy(newEntities[initialPositionIndex])) {
+            postMove(level, initialMove, newGroundEntities, newUpEntities, -1);
+            if (UpEntity.isEnemy(newUpEntities[initialPositionIndex])) {
                 return false;
             }
 
             // Moving toward a wall: just change your direction
             Move newMove = new Move(
-                    initialMove.playerPosition,
+                    initialMove.playerPositionIndex,
                     direction,
                     initialMove.playerState,
-                    newEntities,
+                    newGroundEntities,
+                    newUpEntities,
                     new Move.ActionLinkedElement(action, initialMove.actions)
             );
             return callback.apply(newMove);
         }
-        char targetEntity = initialMove.entities[targetPositionIndex];
+        char targetUpEntity = initialMove.upEntities[targetPositionIndex];
 
-        switch (targetEntity) {
-            case ENTITY_BOULDER -> {
-                return moveBoulder(level, initialMove, direction, delta, action, targetPosition, targetPositionIndex, newEntities, initialPositionIndex, callback);
+        switch (targetUpEntity) {
+            case ENTITY_UP_BOULDER -> {
+                return moveBoulder(level, initialMove, direction, delta, action, targetPosition, targetPositionIndex, newGroundEntities, newUpEntities, initialPositionIndex, callback);
             }
-            case ENTITY_CHEST_OPEN, ENTITY_CHEST_CLOSED -> {
-                postMove(level, initialMove, newEntities, -1);
-                if (CharEntity.isEnemy(newEntities[initialPositionIndex])) {
+            case ENTITY_UP_CHEST_OPEN, ENTITY_UP_CHEST_CLOSED -> {
+                postMove(level, initialMove, newGroundEntities, newUpEntities, -1);
+                if (UpEntity.isEnemy(newUpEntities[initialPositionIndex])) {
                     return false;
                 }
                 Move newMove = new Move(
-                        initialMove.playerPosition,
+                        initialMove.playerPositionIndex,
                         direction,
                         initialMove.playerState,
-                        newEntities,
+                        newGroundEntities,
+                        newUpEntities,
                         new Move.ActionLinkedElement(action, initialMove.actions)
                 );
                 return callback.apply(newMove);
 
             }
-            case ENTITY_ENEMY_FACING_UP, ENTITY_ENEMY_FACING_DOWN, ENTITY_ENEMY_FACING_LEFT, ENTITY_ENEMY_FACING_RIGHT, ENTITY_HOLE -> {
+            case ENTITY_UP_ENEMY_FACING_UP, ENTITY_UP_ENEMY_FACING_DOWN, ENTITY_UP_ENEMY_FACING_LEFT, ENTITY_UP_ENEMY_FACING_RIGHT -> {
                 return false;
             }
-            case ENTITY_GROUND -> {
-                postMove(level, initialMove, newEntities, -1);
-                if (CharEntity.isEnemy(newEntities[targetPositionIndex]) || CharEntity.isEnemy(initialMove.entities[targetPositionIndex])) {
+        }
+        char targetGroundEntity = initialMove.groundEntities[targetPositionIndex];
+        switch (targetGroundEntity) {
+            case ENTITY_GROUND_GROUND, ENTITY_GROUND_DOWNSTAIR -> {
+                postMove(level, initialMove, newGroundEntities, newUpEntities, -1);
+                if (UpEntity.isEnemy(newUpEntities[targetPositionIndex]) || UpEntity.isEnemy(initialMove.upEntities[targetPositionIndex])) {
                     return false;
                 }
 
                 Move newMove = new Move(
-                        targetPosition,
+                        Arrays.binarySearch(level.positions(), targetPosition),
                         direction,
                         initialMove.playerState,
-                        newEntities,
+                        newGroundEntities,
+                        newUpEntities,
                         new Move.ActionLinkedElement(action, initialMove.actions)
                 );
-                if (isFailingMove(level, newMove)) {
+                if (isFailingMove(newMove)) {
                     return false;
                 }
                 return callback.apply(newMove);
             }
-            default -> throw new IllegalStateException("Unexpected value: " + targetEntity);
+            case ENTITY_GROUND_HOLE -> {
+                return false;
+            }
         }
+        throw new IllegalStateException("Unexpected value: [" + targetUpEntity + "] [" + targetGroundEntity + "]");
     }
 
     private static boolean moveBoulder(
@@ -307,54 +340,77 @@ public class Player implements CharEntity {
             @NotNull Action action,
             @NotNull Position targetPosition,
             int targetPositionIndex,
-            char @NotNull [] newEntities,
+            char @NotNull [] newGroundEntities,
+            char @NotNull [] newUpEntities,
             int initialPositionIndex,
             @NotNull Function<Move, Boolean> callback) {
         Position beyondPosition = targetPosition.add(delta);
         int beyondPositionIndex = level.positionIndex(beyondPosition);
         if (beyondPositionIndex > 0) {
-            char beyondPositionEntity = initialMove.entities[beyondPositionIndex];
-            switch (beyondPositionEntity) {
-                case ENTITY_BOULDER, ENTITY_CHEST_OPEN, ENTITY_CHEST_CLOSED -> {
+            char beyondPositionUpEntity = initialMove.upEntities[beyondPositionIndex];
+            switch (beyondPositionUpEntity) {
+                case ENTITY_UP_BOULDER, ENTITY_UP_CHEST_OPEN, ENTITY_UP_CHEST_CLOSED -> {
                     Move newMove = new Move(
-                            initialMove.playerPosition,
+                            initialMove.playerPositionIndex,
                             direction,
                             initialMove.playerState,
-                            newEntities,
+                            newGroundEntities,
+                            newUpEntities,
                             new Move.ActionLinkedElement(action, initialMove.actions)
                     );
                     return callback.apply(newMove);
                 }
-                case ENTITY_GROUND, ENTITY_ENEMY_FACING_UP, ENTITY_ENEMY_FACING_DOWN, ENTITY_ENEMY_FACING_LEFT, ENTITY_ENEMY_FACING_RIGHT -> {
-                    newEntities[targetPositionIndex] = ENTITY_GROUND;
-                    newEntities[beyondPositionIndex] = ENTITY_BOULDER;
-                    postMove(level, initialMove, newEntities, beyondPositionIndex);
-                    if (CharEntity.isEnemy(newEntities[initialPositionIndex])) {
+                case ENTITY_UP_ENEMY_FACING_UP, ENTITY_UP_ENEMY_FACING_DOWN, ENTITY_UP_ENEMY_FACING_LEFT, ENTITY_UP_ENEMY_FACING_RIGHT -> {
+                    newUpEntities[targetPositionIndex] = ENTITY_UP_EMPTY;
+                    newUpEntities[beyondPositionIndex] = ENTITY_UP_BOULDER;
+                    postMove(level, initialMove, newGroundEntities, newUpEntities, beyondPositionIndex);
+                    if (UpEntity.isEnemy(newUpEntities[initialPositionIndex])) {
                         return false;
                     }
 
                     Move newMove = new Move(
-                            initialMove.playerPosition,
+                            initialMove.playerPositionIndex,
                             direction,
                             initialMove.playerState,
-                            newEntities,
+                            newGroundEntities,
+                            newUpEntities,
                             new Move.ActionLinkedElement(action, initialMove.actions)
                     );
                     return callback.apply(newMove);
                 }
-                case ENTITY_HOLE -> {
-                    newEntities[targetPositionIndex] = ENTITY_GROUND;
-                    postMove(level, initialMove, newEntities, -1);
-                    if (CharEntity.isEnemy(newEntities[initialPositionIndex])) {
+            }
+            char beyondPositionGroundEntity = initialMove.groundEntities[beyondPositionIndex];
+            switch (beyondPositionGroundEntity) {
+                case ENTITY_GROUND_GROUND, ENTITY_GROUND_DOWNSTAIR -> {
+                    newUpEntities[targetPositionIndex] = ENTITY_UP_EMPTY;
+                    newUpEntities[beyondPositionIndex] = ENTITY_UP_BOULDER;
+                    postMove(level, initialMove, newGroundEntities, newUpEntities, beyondPositionIndex);
+                    if (UpEntity.isEnemy(newUpEntities[initialPositionIndex])) {
                         return false;
                     }
 
                     Move newMove = new Move(
-                            initialMove.playerPosition,
+                            initialMove.playerPositionIndex,
                             direction,
                             initialMove.playerState,
-                            newEntities,
+                            newGroundEntities,
+                            newUpEntities,
                             new Move.ActionLinkedElement(action, initialMove.actions)
+                    );
+                    return callback.apply(newMove);
+                }
+                case ENTITY_GROUND_HOLE -> {
+                    newUpEntities[targetPositionIndex] = ENTITY_UP_EMPTY;
+                    postMove(level, initialMove, newGroundEntities, newUpEntities, -1);
+                    if (UpEntity.isEnemy(newUpEntities[initialPositionIndex])) {
+                        return false;
+                    }
+
+                    Move newMove = new Move(
+                            initialMove.playerPositionIndex,
+                            direction,
+                            initialMove.playerState,
+                            newGroundEntities, newUpEntities, new Move.ActionLinkedElement(action, initialMove.actions)
                     );
                     return callback.apply(newMove);
                 }
@@ -365,83 +421,101 @@ public class Player implements CharEntity {
 
     private static void postMove(
             @NotNull Level level,
-            @NotNull Move initialiMove,
-            char @NotNull [] newEntities,
+            @NotNull Move initialMove,
+            char @NotNull [] newGroundEntities,
+            char @NotNull [] newUpEntities,
             int crushedEnemyIndex
     ) {
-        for (int currentEntityIndex = 0; currentEntityIndex < newEntities.length; currentEntityIndex++) {
-            char currentEntity = initialiMove.entities[currentEntityIndex];
-            switch (currentEntity) {
-                case ENTITY_ENEMY_FACING_DOWN -> {
+        for (int currentEntityIndex = 0; currentEntityIndex < newUpEntities.length; currentEntityIndex++) {
+            char currentUpEntity = initialMove.upEntities[currentEntityIndex];
+            switch (currentUpEntity) {
+                case ENTITY_UP_ENEMY_FACING_DOWN -> {
                     if (currentEntityIndex != crushedEnemyIndex) {
-                        prepareNextMoveEnemy(
+                        postMoveEnemy(
                                 level,
-                                newEntities,
+                                newGroundEntities,
+                                newUpEntities,
                                 currentEntityIndex,
                                 DELTA_DOWN,
-                                ENTITY_ENEMY_FACING_DOWN,
-                                ENTITY_ENEMY_FACING_UP);
+                                ENTITY_UP_ENEMY_FACING_DOWN,
+                                ENTITY_UP_ENEMY_FACING_UP);
                     }
                 }
-                case ENTITY_ENEMY_FACING_LEFT -> {
+                case ENTITY_UP_ENEMY_FACING_LEFT -> {
                     if (currentEntityIndex != crushedEnemyIndex) {
-                        prepareNextMoveEnemy(
+                        postMoveEnemy(
                                 level,
-                                newEntities,
+                                newGroundEntities,
+                                newUpEntities,
                                 currentEntityIndex,
                                 DELTA_LEFT,
-                                ENTITY_ENEMY_FACING_LEFT,
-                                ENTITY_ENEMY_FACING_RIGHT);
+                                ENTITY_UP_ENEMY_FACING_LEFT,
+                                ENTITY_UP_ENEMY_FACING_RIGHT);
                     }
                 }
-                case ENTITY_ENEMY_FACING_RIGHT -> {
+                case ENTITY_UP_ENEMY_FACING_RIGHT -> {
                     if (currentEntityIndex != crushedEnemyIndex) {
-                        prepareNextMoveEnemy(
+                        postMoveEnemy(
                                 level,
-                                newEntities,
+                                newGroundEntities,
+                                newUpEntities,
                                 currentEntityIndex,
                                 DELTA_RIGHT,
-                                ENTITY_ENEMY_FACING_RIGHT,
-                                ENTITY_ENEMY_FACING_LEFT);
+                                ENTITY_UP_ENEMY_FACING_RIGHT,
+                                ENTITY_UP_ENEMY_FACING_LEFT);
                     }
                 }
-                case ENTITY_ENEMY_FACING_UP -> {
+                case ENTITY_UP_ENEMY_FACING_UP -> {
                     if (currentEntityIndex != crushedEnemyIndex) {
-                        prepareNextMoveEnemy(level,
-                                newEntities,
+                        postMoveEnemy(level,
+                                newGroundEntities,
+                                newUpEntities,
                                 currentEntityIndex,
                                 DELTA_UP,
-                                ENTITY_ENEMY_FACING_UP,
-                                ENTITY_ENEMY_FACING_DOWN);
+                                ENTITY_UP_ENEMY_FACING_UP,
+                                ENTITY_UP_ENEMY_FACING_DOWN);
                     }
                 }
-                case ENTITY_GLASS -> {
-                    throw new IllegalArgumentException("");
+            }
+            char currentGroundEntity = initialMove.groundEntities[currentEntityIndex];
+            switch (currentGroundEntity) {
+                case ENTITY_GROUND_GLASS -> {
+                    if (currentEntityIndex == initialMove.playerPositionIndex) {
+                        newGroundEntities[currentEntityIndex] = ENTITY_GROUND_HOLE;
+                    }
                 }
             }
         }
     }
 
-    private static void prepareNextMoveEnemy(
+    private static void postMoveEnemy(
             @NotNull Level level,
-            char @NotNull [] result,
+            char @NotNull [] newGroundEntities,
+            char @NotNull [] newUpEntities,
             int currentEntityIndex,
             @NotNull Position delta,
             char currentEntity,
             char oppositeEnemy) {
         Position targetPosition = level.positions()[currentEntityIndex].add(delta);
         int targetPositionIndex = level.positionIndex(targetPosition);
-        if (targetPositionIndex > 0) {
-            result[currentEntityIndex] = oppositeEnemy;
+        if (targetPositionIndex < 0) {
+            newUpEntities[currentEntityIndex] = oppositeEnemy;
         } else {
-            switch (result[targetPositionIndex]) {
-                case ENTITY_BOULDER -> {
-                    result[currentEntityIndex] = oppositeEnemy;
+            char targetUpEntity = newUpEntities[targetPositionIndex];
+            switch (targetUpEntity) {
+                case ENTITY_UP_BOULDER, ENTITY_UP_CHEST_CLOSED, ENTITY_UP_CHEST_OPEN, ENTITY_UP_ENEMY_FACING_DOWN, ENTITY_UP_ENEMY_FACING_LEFT, ENTITY_UP_ENEMY_FACING_RIGHT, ENTITY_UP_ENEMY_FACING_UP -> {
+                    newUpEntities[currentEntityIndex] = oppositeEnemy;
                 }
-                case ENTITY_GROUND -> {
-                    result[targetPositionIndex] = currentEntity;
+            }
+            char targeGroundEntity = newGroundEntities[targetPositionIndex];
+            switch (targeGroundEntity) {
+                case ENTITY_GROUND_HOLE -> {
+                    newUpEntities[currentEntityIndex] = oppositeEnemy;
                 }
-                default -> throw new IllegalStateException("Unexpected value: " + result[targetPositionIndex]);
+                case ENTITY_GROUND_GROUND -> {
+                    newUpEntities[currentEntityIndex] = ENTITY_UP_EMPTY;
+                    newUpEntities[targetPositionIndex] = currentEntity;
+                }
             }
         }
     }

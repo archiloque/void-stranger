@@ -10,6 +10,135 @@
 	"customFields" : {},
 	"layers": [],
 	"entities": {
+		"Player_start_position": [
+			{
+				"id": "Player_start_position",
+				"iid": "222f17b0-8990-11ee-879a-bd4b04e5c989",
+				"layer": "Special",
+				"x": 160,
+				"y": 80,
+				"width": 16,
+				"height": 16,
+				"color": 15251350,
+				"customFields": {
+					"Direction": "Down"
+				}
+			}
+		],
+		"Boulder": [
+			{
+				"id": "Boulder",
+				"iid": "f1c71ff0-8990-11ee-879a-bd637ca7d731",
+				"layer": "Up",
+				"x": 16,
+				"y": 80,
+				"width": 16,
+				"height": 16,
+				"color": 1578021,
+				"customFields" : {}
+			},
+			{
+				"id": "Boulder",
+				"iid": "f2ff03b0-8990-11ee-879a-ebc381f2704e",
+				"layer": "Up",
+				"x": 32,
+				"y": 96,
+				"width": 16,
+				"height": 16,
+				"color": 1578021,
+				"customFields" : {}
+			},
+			{
+				"id": "Boulder",
+				"iid": "fc52b5b0-8990-11ee-879a-ffe96f69308a",
+				"layer": "Up",
+				"x": 96,
+				"y": 80,
+				"width": 16,
+				"height": 16,
+				"color": 1578021,
+				"customFields" : {}
+			},
+			{
+				"id": "Boulder",
+				"iid": "13307060-8990-11ee-879a-219c97ca1f2c",
+				"layer": "Up",
+				"x": 160,
+				"y": 64,
+				"width": 16,
+				"height": 16,
+				"color": 1578021,
+				"customFields" : {}
+			},
+			{
+				"id": "Boulder",
+				"iid": "13701170-8990-11ee-879a-1167cb68b562",
+				"layer": "Up",
+				"x": 176,
+				"y": 64,
+				"width": 16,
+				"height": 16,
+				"color": 1578021,
+				"customFields" : {}
+			},
+			{
+				"id": "Boulder",
+				"iid": "13b4bb90-8990-11ee-879a-734ab1f13d59",
+				"layer": "Up",
+				"x": 192,
+				"y": 64,
+				"width": 16,
+				"height": 16,
+				"color": 1578021,
+				"customFields" : {}
+			},
+			{
+				"id": "Boulder",
+				"iid": "14eec230-8990-11ee-879a-5da2bb5fb88c",
+				"layer": "Up",
+				"x": 144,
+				"y": 80,
+				"width": 16,
+				"height": 16,
+				"color": 1578021,
+				"customFields" : {}
+			},
+			{
+				"id": "Boulder",
+				"iid": "17bbc4e0-8990-11ee-879a-e98f439f1d32",
+				"layer": "Up",
+				"x": 144,
+				"y": 96,
+				"width": 16,
+				"height": 16,
+				"color": 1578021,
+				"customFields" : {}
+			},
+			{
+				"id": "Boulder",
+				"iid": "17fe2510-8990-11ee-879a-e34962ebc0b5",
+				"layer": "Up",
+				"x": 160,
+				"y": 96,
+				"width": 16,
+				"height": 16,
+				"color": 1578021,
+				"customFields" : {}
+			}
+		],
+		"Chest": [
+			{
+				"id": "Chest",
+				"iid": "e2dd3920-8990-11ee-879a-edd977d657be",
+				"layer": "Up",
+				"x": 48,
+				"y": 16,
+				"width": 16,
+				"height": 16,
+				"color": 1578021,
+				"customFields" : {}
+			}
+		],
 		"Wall": [
 			{
 				"id": "Wall",
@@ -485,120 +614,6 @@
 				"customFields" : {}
 			}
 		],
-		"Chest": [
-			{
-				"id": "Chest",
-				"iid": "e2dd3920-8990-11ee-879a-edd977d657be",
-				"layer": "Ground",
-				"x": 48,
-				"y": 16,
-				"width": 16,
-				"height": 16,
-				"color": 15251350,
-				"customFields" : {}
-			}
-		],
-		"Boulder": [
-			{
-				"id": "Boulder",
-				"iid": "f1c71ff0-8990-11ee-879a-bd637ca7d731",
-				"layer": "Ground",
-				"x": 16,
-				"y": 80,
-				"width": 16,
-				"height": 16,
-				"color": 7552569,
-				"customFields" : {}
-			},
-			{
-				"id": "Boulder",
-				"iid": "f2ff03b0-8990-11ee-879a-ebc381f2704e",
-				"layer": "Ground",
-				"x": 32,
-				"y": 96,
-				"width": 16,
-				"height": 16,
-				"color": 7552569,
-				"customFields" : {}
-			},
-			{
-				"id": "Boulder",
-				"iid": "fc52b5b0-8990-11ee-879a-ffe96f69308a",
-				"layer": "Ground",
-				"x": 96,
-				"y": 80,
-				"width": 16,
-				"height": 16,
-				"color": 7552569,
-				"customFields" : {}
-			},
-			{
-				"id": "Boulder",
-				"iid": "13307060-8990-11ee-879a-219c97ca1f2c",
-				"layer": "Ground",
-				"x": 160,
-				"y": 64,
-				"width": 16,
-				"height": 16,
-				"color": 7552569,
-				"customFields" : {}
-			},
-			{
-				"id": "Boulder",
-				"iid": "13701170-8990-11ee-879a-1167cb68b562",
-				"layer": "Ground",
-				"x": 176,
-				"y": 64,
-				"width": 16,
-				"height": 16,
-				"color": 7552569,
-				"customFields" : {}
-			},
-			{
-				"id": "Boulder",
-				"iid": "13b4bb90-8990-11ee-879a-734ab1f13d59",
-				"layer": "Ground",
-				"x": 192,
-				"y": 64,
-				"width": 16,
-				"height": 16,
-				"color": 7552569,
-				"customFields" : {}
-			},
-			{
-				"id": "Boulder",
-				"iid": "14eec230-8990-11ee-879a-5da2bb5fb88c",
-				"layer": "Ground",
-				"x": 144,
-				"y": 80,
-				"width": 16,
-				"height": 16,
-				"color": 7552569,
-				"customFields" : {}
-			},
-			{
-				"id": "Boulder",
-				"iid": "17bbc4e0-8990-11ee-879a-e98f439f1d32",
-				"layer": "Ground",
-				"x": 144,
-				"y": 96,
-				"width": 16,
-				"height": 16,
-				"color": 7552569,
-				"customFields" : {}
-			},
-			{
-				"id": "Boulder",
-				"iid": "17fe2510-8990-11ee-879a-e34962ebc0b5",
-				"layer": "Ground",
-				"x": 160,
-				"y": 96,
-				"width": 16,
-				"height": 16,
-				"color": 7552569,
-				"customFields" : {}
-			}
-		],
 		"Ground": [
 			{
 				"id": "Ground",
@@ -628,17 +643,6 @@
 				"layer": "Ground",
 				"x": 48,
 				"y": 64,
-				"width": 16,
-				"height": 16,
-				"color": 15251350,
-				"customFields" : {}
-			},
-			{
-				"id": "Ground",
-				"iid": "f7ab4db0-8990-11ee-879a-edca2477b911",
-				"layer": "Ground",
-				"x": 48,
-				"y": 80,
 				"width": 16,
 				"height": 16,
 				"color": 15251350,
@@ -826,6 +830,116 @@
 				"layer": "Ground",
 				"x": 192,
 				"y": 96,
+				"width": 16,
+				"height": 16,
+				"color": 15251350,
+				"customFields" : {}
+			},
+			{
+				"id": "Ground",
+				"iid": "b8560ca0-8990-11ee-9530-b7b40da97c98",
+				"layer": "Ground",
+				"x": 16,
+				"y": 80,
+				"width": 16,
+				"height": 16,
+				"color": 15251350,
+				"customFields" : {}
+			},
+			{
+				"id": "Ground",
+				"iid": "b8b56ab0-8990-11ee-9530-ff029f07b774",
+				"layer": "Ground",
+				"x": 32,
+				"y": 96,
+				"width": 16,
+				"height": 16,
+				"color": 15251350,
+				"customFields" : {}
+			},
+			{
+				"id": "Ground",
+				"iid": "b9428f80-8990-11ee-9530-83205e93fe0e",
+				"layer": "Ground",
+				"x": 96,
+				"y": 80,
+				"width": 16,
+				"height": 16,
+				"color": 15251350,
+				"customFields" : {}
+			},
+			{
+				"id": "Ground",
+				"iid": "b9d35dd0-8990-11ee-9530-7f65ae5f1f60",
+				"layer": "Ground",
+				"x": 144,
+				"y": 80,
+				"width": 16,
+				"height": 16,
+				"color": 15251350,
+				"customFields" : {}
+			},
+			{
+				"id": "Ground",
+				"iid": "ba2b41d0-8990-11ee-9530-2d8a8045f211",
+				"layer": "Ground",
+				"x": 144,
+				"y": 96,
+				"width": 16,
+				"height": 16,
+				"color": 15251350,
+				"customFields" : {}
+			},
+			{
+				"id": "Ground",
+				"iid": "ba8e4960-8990-11ee-9530-099b99130642",
+				"layer": "Ground",
+				"x": 160,
+				"y": 96,
+				"width": 16,
+				"height": 16,
+				"color": 15251350,
+				"customFields" : {}
+			},
+			{
+				"id": "Ground",
+				"iid": "bb0d3d60-8990-11ee-9530-57eeb047fdda",
+				"layer": "Ground",
+				"x": 160,
+				"y": 64,
+				"width": 16,
+				"height": 16,
+				"color": 15251350,
+				"customFields" : {}
+			},
+			{
+				"id": "Ground",
+				"iid": "bb520e90-8990-11ee-9530-792c10b54e46",
+				"layer": "Ground",
+				"x": 176,
+				"y": 64,
+				"width": 16,
+				"height": 16,
+				"color": 15251350,
+				"customFields" : {}
+			},
+			{
+				"id": "Ground",
+				"iid": "bbb404b0-8990-11ee-9530-dd3ac54866f6",
+				"layer": "Ground",
+				"x": 192,
+				"y": 64,
+				"width": 16,
+				"height": 16,
+				"color": 15251350,
+				"customFields" : {}
+			},
+			{
+				"id": "Ground",
+				"iid": "bd41d0a0-8990-11ee-9530-7bb23b3b3e5c",
+				"layer": "Ground",
+				"x": 48,
+				"y": 16,
 				"width": 16,
 				"height": 16,
 				"color": 15251350,
@@ -1208,26 +1322,11 @@
 				"customFields" : {}
 			}
 		],
-		"Player_start_position": [
-			{
-				"id": "Player_start_position",
-				"iid": "222f17b0-8990-11ee-879a-bd4b04e5c989",
-				"layer": "Items",
-				"x": 160,
-				"y": 80,
-				"width": 16,
-				"height": 16,
-				"color": 15251350,
-				"customFields": {
-					"Direction": "Down"
-				}
-			}
-		],
 		"Down_stairs": [
 			{
 				"id": "Down_stairs",
-				"iid": "2a5ee320-8990-11ee-879a-bd2eeb3beb45",
-				"layer": "Items",
+				"iid": "c4022d90-8990-11ee-9530-571471a51f93",
+				"layer": "Ground",
 				"x": 48,
 				"y": 80,
 				"width": 16,

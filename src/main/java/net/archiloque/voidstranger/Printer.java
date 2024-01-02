@@ -2,37 +2,36 @@ package net.archiloque.voidstranger;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Printer implements CharEntity{
+public class Printer implements UpEntity, GroundEntity {
 
     public static void printPath(Level level, Move initialMove, Move finalMove) throws IOException {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("solutions/" + level.identifier() + ".txt"))) {
-            printSolutionDescription(level, finalMove, writer);
-            writer.newLine();
-            printLevel(level, initialMove, writer);
-            writer.newLine();
+        try (PrintStream printStream = new PrintStream(new BufferedOutputStream(new FileOutputStream("solutions/" + level.identifier() + ".txt")))) {
+            printSolutionDescription(level, finalMove, printStream);
+            printStream.println();
+            printLevel(level, initialMove, printStream);
+            printStream.println();
             Move currentMove = initialMove;
-            for(Action action : finalMove.getActions()) {
+            for (Action action : finalMove.getActions()) {
                 currentMove = Player.simulate(level, currentMove, action);
-                writer.write(action.name());
-                writer.newLine();
-                printLevel(level, currentMove, writer);
-                writer.newLine();
+                printStream.println(action.name());
+                printLevel(level, currentMove, printStream);
+                printStream.println();
             }
         }
     }
 
-    private static void printSolutionDescription(@NotNull Level level, @NotNull Move move, @NotNull BufferedWriter writer) throws IOException {
+    private static void printSolutionDescription(@NotNull Level level, @NotNull Move move, @NotNull PrintStream printStream) throws IOException {
         List<Action> actions = move.getActions();
         Action currentAction = null;
         int timesCurrentAction = -1;
         List<String> formattedActions = new ArrayList<>();
+        List<String> rawActions = new ArrayList<>();
         for (Action action : actions) {
+            rawActions.add(action.name());
             if (action.equals(currentAction)) {
                 timesCurrentAction += 1;
             } else {
@@ -52,16 +51,17 @@ public class Printer implements CharEntity{
         } else {
             formattedActions.add(currentAction + " x " + timesCurrentAction);
         }
-        writer.write(String.join("\n", formattedActions));
-        writer.newLine();
+        printStream.println(String.join(", ", rawActions));
+        printStream.println();
+        printStream.println(String.join("\n", formattedActions));
     }
 
-    private static void printLevel(Level level, Move move, BufferedWriter writer) throws IOException {
+    public static void printLevel(Level level, Move move, PrintStream printStream) throws IOException {
         for (int lineIndex = 0; lineIndex <= level.height(); lineIndex++) {
             for (int columnIndex = 0; columnIndex <= level.width(); columnIndex++) {
-                writer.write(new String(charAtPosition(level, move, columnIndex, lineIndex)));
+                printStream.print(charAtPosition(level, move, columnIndex, lineIndex));
             }
-            writer.newLine();
+            printStream.println();
         }
     }
 
@@ -70,36 +70,41 @@ public class Printer implements CharEntity{
         int entityIndex = level.positionIndex(position);
         if (entityIndex < 0) {
             return "#";
-        } else if (position.equals(move.playerPosition)) {
+        } else if (position.equals(level.positions()[move.playerPositionIndex])) {
             return "@";
         }
 
-        char entity = move.entities[entityIndex];
-        switch (entity) {
-            case ENTITY_BOULDER, ENTITY_HOLE, ENTITY_CHEST_OPEN, ENTITY_CHEST_CLOSED -> {
-                return Character.toString(entity);
+        char upEntity = move.upEntities[entityIndex];
+        switch (upEntity) {
+            case ENTITY_UP_BOULDER, ENTITY_UP_CHEST_OPEN, ENTITY_UP_CHEST_CLOSED -> {
+                return Character.toString(upEntity);
             }
-            case ENTITY_ENEMY_FACING_UP -> {
+            case ENTITY_UP_ENEMY_FACING_UP -> {
                 return "⇑";
             }
-            case ENTITY_ENEMY_FACING_RIGHT -> {
+            case ENTITY_UP_ENEMY_FACING_RIGHT -> {
                 return "⇒";
             }
-            case ENTITY_ENEMY_FACING_LEFT -> {
+            case ENTITY_UP_ENEMY_FACING_LEFT -> {
                 return "⇐";
             }
-            case ENTITY_ENEMY_FACING_DOWN -> {
+            case ENTITY_UP_ENEMY_FACING_DOWN -> {
                 return "⇓";
             }
-            case ENTITY_GROUND -> {
-                if (position.equals(level.downStairsPosition())) {
-                    return "↓";
-                } else {
-                    return " ";
-                }
+        }
+        char groundEntity = move.groundEntities[entityIndex];
+        switch (groundEntity) {
+            case ENTITY_GROUND_HOLE -> {
+                return "□";
+            }
+            case ENTITY_GROUND_DOWNSTAIR -> {
+                return "↓";
+            }
+            case ENTITY_GROUND_GROUND -> {
+                return " ";
             }
         }
-        throw new IllegalArgumentException("");
+        throw new IllegalArgumentException("[" + upEntity + "] [" + groundEntity + "]");
     }
 
 }

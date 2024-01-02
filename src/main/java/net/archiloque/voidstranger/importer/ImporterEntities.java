@@ -65,4 +65,13 @@ public record ImporterEntities(
         ).filter(Objects::nonNull).flatMap(Collection::stream);
     }
 
+    public Stream<ImporterEntity> getGroundEntities() {
+        return Stream.of(
+                downStairs,
+                glass,
+                ground,
+                hole
+        ).filter(Objects::nonNull).flatMap(Collection::stream);
+    }
+
 }

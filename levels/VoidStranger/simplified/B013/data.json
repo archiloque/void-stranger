@@ -10,6 +10,36 @@
 	"customFields" : {},
 	"layers": [],
 	"entities": {
+		"Player_start_position": [
+			{
+				"id": "Player_start_position",
+				"iid": "3beccf20-8990-11ee-9888-cd3fa49bba2c",
+				"layer": "Special",
+				"x": 176,
+				"y": 96,
+				"width": 16,
+				"height": 16,
+				"color": 15251350,
+				"customFields": {
+					"Direction": "Left"
+				}
+			}
+		],
+		"Enemy": [
+			{
+				"id": "Enemy",
+				"iid": "18084580-8990-11ee-9888-8d97d2d60dd8",
+				"layer": "Up",
+				"x": 192,
+				"y": 48,
+				"width": 16,
+				"height": 16,
+				"color": 39387,
+				"customFields": {
+					"Direction": "Up"
+				}
+			}
+		],
 		"Wall": [
 			{
 				"id": "Wall",
@@ -452,21 +482,6 @@
 				"customFields" : {}
 			}
 		],
-		"Enemy": [
-			{
-				"id": "Enemy",
-				"iid": "18084580-8990-11ee-9888-8d97d2d60dd8",
-				"layer": "Ground",
-				"x": 192,
-				"y": 48,
-				"width": 16,
-				"height": 16,
-				"color": 39387,
-				"customFields": {
-					"Direction": "Up"
-				}
-			}
-		],
 		"Ground": [
 			{
 				"id": "Ground",
@@ -646,17 +661,6 @@
 			},
 			{
 				"id": "Ground",
-				"iid": "37cac3c0-8990-11ee-9888-adcf7f15c6f6",
-				"layer": "Ground",
-				"x": 32,
-				"y": 96,
-				"width": 16,
-				"height": 16,
-				"color": 15251350,
-				"customFields" : {}
-			},
-			{
-				"id": "Ground",
 				"iid": "38599640-8990-11ee-9888-0d097d696cfe",
 				"layer": "Ground",
 				"x": 48,
@@ -672,6 +676,17 @@
 				"layer": "Ground",
 				"x": 64,
 				"y": 80,
+				"width": 16,
+				"height": 16,
+				"color": 15251350,
+				"customFields" : {}
+			},
+			{
+				"id": "Ground",
+				"iid": "0bbf8100-8990-11ee-9530-41756515ee0c",
+				"layer": "Ground",
+				"x": 192,
+				"y": 48,
 				"width": 16,
 				"height": 16,
 				"color": 15251350,
@@ -724,26 +739,11 @@
 				"customFields" : {}
 			}
 		],
-		"Player_start_position": [
-			{
-				"id": "Player_start_position",
-				"iid": "3beccf20-8990-11ee-9888-cd3fa49bba2c",
-				"layer": "Items",
-				"x": 176,
-				"y": 96,
-				"width": 16,
-				"height": 16,
-				"color": 15251350,
-				"customFields": {
-					"Direction": "Left"
-				}
-			}
-		],
 		"Down_stairs": [
 			{
 				"id": "Down_stairs",
-				"iid": "40e6eb00-8990-11ee-9888-134a68f129e7",
-				"layer": "Items",
+				"iid": "1455fd80-8990-11ee-9530-a5027f8e8ec1",
+				"layer": "Ground",
 				"x": 32,
 				"y": 96,
 				"width": 16,
