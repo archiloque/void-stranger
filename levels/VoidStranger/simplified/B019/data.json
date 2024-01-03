@@ -25,6 +25,19 @@
 				}
 			}
 		],
+		"Rupee": [
+			{
+				"id": "Rupee",
+				"iid": "37bd2db0-8990-11ee-962d-9b9eee193f0f",
+				"layer": "Special",
+				"x": 32,
+				"y": 32,
+				"width": 16,
+				"height": 16,
+				"color": 14120515,
+				"customFields" : {}
+			}
+		],
 		"Boulder": [
 			{
 				"id": "Boulder",
@@ -38,9 +51,9 @@
 				"customFields" : {}
 			}
 		],
-		"Enemy": [
+		"Enemy_basic": [
 			{
-				"id": "Enemy",
+				"id": "Enemy_basic",
 				"iid": "22cbde60-8990-11ee-9888-65e21cbf44f0",
 				"layer": "Up",
 				"x": 64,

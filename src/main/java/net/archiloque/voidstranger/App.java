@@ -32,6 +32,7 @@ public class App {
                     System.out.println();
                 }
                 System.out.println("Over");
+                System.out.println(Player.moveStatus(currentMove, level));
             } else {
                 throw new IllegalArgumentException("");
             }

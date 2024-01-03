@@ -8,8 +8,8 @@ import java.util.List;
 
 public class Printer implements UpEntity, GroundEntity {
 
-    public static void printPath(Level level, Move initialMove, Move finalMove) throws IOException {
-        try (PrintStream printStream = new PrintStream(new BufferedOutputStream(new FileOutputStream("solutions/" + level.identifier() + ".txt")))) {
+    public static void printPath(@NotNull Level level, @NotNull Move initialMove, @NotNull Move finalMove, @NotNull String suffix) throws IOException {
+        try (PrintStream printStream = new PrintStream(new BufferedOutputStream(new FileOutputStream("solutions/" + level.identifier() + suffix + ".txt")))) {
             printSolutionDescription(level, finalMove, printStream);
             printStream.println();
             printLevel(level, initialMove, printStream);
@@ -24,7 +24,7 @@ public class Printer implements UpEntity, GroundEntity {
         }
     }
 
-    private static void printSolutionDescription(@NotNull Level level, @NotNull Move move, @NotNull PrintStream printStream) throws IOException {
+    private static void printSolutionDescription(@NotNull Level level, @NotNull Move move, @NotNull PrintStream printStream) {
         List<Action> actions = move.getActions();
         Action currentAction = null;
         int timesCurrentAction = -1;
@@ -69,26 +69,26 @@ public class Printer implements UpEntity, GroundEntity {
         Position position = new Position(columnIndex, lineIndex);
         int entityIndex = level.positionIndex(position);
         if (entityIndex < 0) {
-            return "#";
+            return "■";
         } else if (position.equals(level.positions()[move.playerPositionIndex])) {
             return "@";
         }
 
         char upEntity = move.upEntities[entityIndex];
         switch (upEntity) {
-            case ENTITY_UP_BOULDER, ENTITY_UP_CHEST_OPEN, ENTITY_UP_CHEST_CLOSED -> {
+            case ENTITY_UP_BOULDER, ENTITY_UP_CHEST_OPEN, ENTITY_UP_CHEST_CLOSED, ENTITY_UP_ENEMY_SEEKER-> {
                 return Character.toString(upEntity);
             }
-            case ENTITY_UP_ENEMY_FACING_UP -> {
+            case ENTITY_UP_ENEMY_BASIC_FACING_UP -> {
                 return "⇑";
             }
-            case ENTITY_UP_ENEMY_FACING_RIGHT -> {
+            case ENTITY_UP_ENEMY_BASIC_FACING_RIGHT -> {
                 return "⇒";
             }
-            case ENTITY_UP_ENEMY_FACING_LEFT -> {
+            case ENTITY_UP_ENEMY_BASIC_FACING_LEFT -> {
                 return "⇐";
             }
-            case ENTITY_UP_ENEMY_FACING_DOWN -> {
+            case ENTITY_UP_ENEMY_BASIC_FACING_DOWN -> {
                 return "⇓";
             }
         }
@@ -104,7 +104,7 @@ public class Printer implements UpEntity, GroundEntity {
                 return " ";
             }
             case ENTITY_GROUND_GLASS -> {
-                return "■";
+                return "#";
             }
         }
         throw new IllegalArgumentException("[" + upEntity + "] [" + groundEntity + "]");

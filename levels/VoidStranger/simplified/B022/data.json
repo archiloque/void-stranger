@@ -71,9 +71,9 @@
 				"customFields" : {}
 			}
 		],
-		"Enemy": [
+		"Enemy_basic": [
 			{
-				"id": "Enemy",
+				"id": "Enemy_basic",
 				"iid": "14e0b870-8990-11ee-8379-4962f1d60268",
 				"layer": "Up",
 				"x": 48,
@@ -86,7 +86,7 @@
 				}
 			},
 			{
-				"id": "Enemy",
+				"id": "Enemy_basic",
 				"iid": "392d2ba0-8990-11ee-8379-05068f75edc0",
 				"layer": "Up",
 				"x": 128,
@@ -99,7 +99,7 @@
 				}
 			},
 			{
-				"id": "Enemy",
+				"id": "Enemy_basic",
 				"iid": "3ee0d380-8990-11ee-8379-eb43bb0dd51c",
 				"layer": "Up",
 				"x": 64,
@@ -112,7 +112,7 @@
 				}
 			},
 			{
-				"id": "Enemy",
+				"id": "Enemy_basic",
 				"iid": "41903c10-8990-11ee-8379-7bf1f4e3ffd2",
 				"layer": "Up",
 				"x": 80,
@@ -125,7 +125,7 @@
 				}
 			},
 			{
-				"id": "Enemy",
+				"id": "Enemy_basic",
 				"iid": "6f095140-8990-11ee-8379-4bde47c6a494",
 				"layer": "Up",
 				"x": 112,

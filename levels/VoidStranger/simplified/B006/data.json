@@ -6,7 +6,12 @@
 	"width": 224,
 	"height": 128,
 	"bgColor": "#696A79",
-	"neighbourLevels": [],
+	"neighbourLevels": [
+		{
+			"levelIid": "95813720-8990-11ee-8379-79c2cff86444",
+			"dir": "n"
+		}
+	],
 	"customFields" : {},
 	"layers": [],
 	"entities": {

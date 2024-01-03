@@ -51,9 +51,9 @@
 				"customFields" : {}
 			}
 		],
-		"Enemy": [
+		"Enemy_basic": [
 			{
-				"id": "Enemy",
+				"id": "Enemy_basic",
 				"iid": "41d44650-8990-11ee-9888-410cb3af9c40",
 				"layer": "Up",
 				"x": 112,
@@ -66,7 +66,7 @@
 				}
 			},
 			{
-				"id": "Enemy",
+				"id": "Enemy_basic",
 				"iid": "600cc930-8990-11ee-9888-2f529db4b876",
 				"layer": "Up",
 				"x": 80,
@@ -79,7 +79,7 @@
 				}
 			},
 			{
-				"id": "Enemy",
+				"id": "Enemy_basic",
 				"iid": "7826ad60-8990-11ee-9888-fdb265557066",
 				"layer": "Up",
 				"x": 32,

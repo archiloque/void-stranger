@@ -37,6 +37,9 @@ public final class Move {
             @Nullable ActionLinkedElement actions
     ) {
         this.playerPositionIndex = playerPositionIndex;
+        if(playerPositionIndex < 0) {
+            throw new IllegalStateException("" + playerPositionIndex);
+        }
         this.playerDirection = playerDirection;
         this.playerState = playerState;
         this.groundEntities = groundEntities;

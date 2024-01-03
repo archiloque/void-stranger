@@ -36,18 +36,28 @@ public class Preparer implements UpEntity, GroundEntity {
 
         int[] rupeesIndexes = getRupees(importedImporterLevel, entitiesPosition);
 
-        Level level = new Level(
-                importedImporterLevel.identifier(),
-                width,
-                height,
-                entitiesPosition,
-                rupeesIndexes);
         char[] groundEntities = new char[entitiesPosition.length];
         char[] upEntities = new char[entitiesPosition.length];
         for (int entityIndex = 0; entityIndex < entitiesPosition.length; entityIndex++) {
             groundEntities[entityIndex] = getGroundEntity(entitiesPosition[entityIndex], importedImporterLevel);
             upEntities[entityIndex] = getUpEntity(entitiesPosition[entityIndex], importedImporterLevel);
         }
+        boolean hasChest = false;
+        for (char upEntity : upEntities) {
+            if (upEntity == ENTITY_UP_CHEST_CLOSED) {
+                hasChest = true;
+                break;
+            }
+        }
+
+        Level level = new Level(
+                importedImporterLevel.identifier(),
+                width,
+                height,
+                entitiesPosition,
+                rupeesIndexes,
+                hasChest
+                );
 
         Move move = new Move(
                 Arrays.binarySearch(entitiesPosition, playerPosition),
@@ -97,20 +107,25 @@ public class Preparer implements UpEntity, GroundEntity {
             return ENTITY_UP_BOULDER;
         }
 
-        Optional<ImporterEntityWithDirection> enemy = find(position, importedImporterLevel.entities().enemy());
-        if (enemy.isPresent()) {
-            switch (enemy.get().getDirection()) {
+        Optional<SimpleImporterEntity> enemySeeker = find(position, importedImporterLevel.entities().enemySeeker());
+        if(enemySeeker.isPresent()) {
+            return ENTITY_UP_ENEMY_SEEKER;
+        }
+
+        Optional<ImporterEntityWithDirection> enemyBasic = find(position, importedImporterLevel.entities().enemyBasic());
+        if (enemyBasic.isPresent()) {
+            switch (enemyBasic.get().getDirection()) {
                 case Up -> {
-                    return ENTITY_UP_ENEMY_FACING_UP;
+                    return ENTITY_UP_ENEMY_BASIC_FACING_UP;
                 }
                 case Down -> {
-                    return ENTITY_UP_ENEMY_FACING_DOWN;
+                    return ENTITY_UP_ENEMY_BASIC_FACING_DOWN;
                 }
                 case Left -> {
-                    return ENTITY_UP_ENEMY_FACING_LEFT;
+                    return ENTITY_UP_ENEMY_BASIC_FACING_LEFT;
                 }
                 case Right -> {
-                    return ENTITY_UP_ENEMY_FACING_RIGHT;
+                    return ENTITY_UP_ENEMY_BASIC_FACING_RIGHT;
                 }
             }
         }

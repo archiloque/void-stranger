@@ -66,26 +66,46 @@ public class Player implements GroundEntity, UpEntity {
         currentMoves.addFirst(preparationResult.move());
         knownMoves.add(preparationResult.move());
         Level level = preparationResult.level();
-        final AtomicReference<MoveStatus> currentStatus = new AtomicReference<MoveStatus>();
-        currentStatus.set(MoveStatus.LOOSE);
+
+        final AtomicReference<Boolean> reachedExit = new AtomicReference<>();
+        reachedExit.set(false);
+        final AtomicReference<Boolean> reachedRupee = new AtomicReference<>();
+        reachedRupee.set(false);
+        final AtomicReference<Boolean> reachedChest = new AtomicReference<>();
+        reachedChest.set(false);
+
         while (!currentMoves.isEmpty()) {
             Move currentMove = currentMoves.removeFirst();
             if (nextMoves(level, currentMove, newMove -> {
                 if (knownMoves.add(newMove)) {
-                    MoveStatus moveStatus = moveStatus(newMove);
+                    MoveStatus moveStatus = moveStatus(newMove, level);
                     switch (moveStatus) {
                         case WIN -> {
-                            printPath(preparationResult, newMove, level);
+                            printPath(preparationResult, newMove, level, "");
                             return true;
                         }
-                        case WIN_NO_RUPEE, WIN_NO_CHESS -> {
-                            if (currentStatus.get() == MoveStatus.LOOSE) {
-                                printPath(preparationResult, newMove, level);
-                                currentStatus.set(moveStatus);
+                        case RUPEE -> {
+                            if (!reachedRupee.get()) {
+                                printPath(preparationResult, newMove, level, "_rupee");
+                                reachedRupee.set(true);
                             }
                         }
+                        case CHEST -> {
+                            if (!reachedChest.get()) {
+                                printPath(preparationResult, newMove, level, "_chest");
+                                reachedChest.set(true);
+                            }
+                        }
+                        case EXIT -> {
+                            if (!reachedExit.get()) {
+                                printPath(preparationResult, newMove, level, "_exit");
+                                reachedExit.set(true);
+                            }
+                        }
+                        case LOOSE -> {
+                            currentMoves.addLast(newMove);
+                        }
                     }
-                    currentMoves.addLast(newMove);
                     return false;
                 }
                 return false;
@@ -96,9 +116,9 @@ public class Player implements GroundEntity, UpEntity {
         System.out.println(" ### Fail !");
     }
 
-    private static void printPath(Preparer.PreparationResult preparationResult, Move newMove, Level level) {
+    private static void printPath(@NotNull Preparer.PreparationResult preparationResult, @NotNull Move newMove, @NotNull Level level, @NotNull String suffix) {
         try {
-            Printer.printPath(level, preparationResult.move(), newMove);
+            Printer.printPath(level, preparationResult.move(), newMove, suffix);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -108,37 +128,44 @@ public class Player implements GroundEntity, UpEntity {
     enum MoveStatus {
         WIN,
         LOOSE,
-        WIN_NO_RUPEE,
-        WIN_NO_CHESS,
+        RUPEE,
+        CHEST,
+        EXIT,
     }
 
-    private static MoveStatus moveStatus(@NotNull Move move) {
+    public static MoveStatus moveStatus(@NotNull Move move, @NotNull Level level) {
         if (!(move.groundEntities[move.playerPositionIndex] == ENTITY_GROUND_DOWNSTAIR)) {
             return MoveStatus.LOOSE;
         }
-        for (char entity : move.upEntities) {
-            if (entity == ENTITY_UP_CHEST_CLOSED) {
-                return MoveStatus.WIN_NO_CHESS;
+
+        boolean closedChest = false;
+        boolean missingRupee = false;
+
+        if (level.hasChest()) {
+            for (char entity : move.upEntities) {
+                if (entity == ENTITY_UP_CHEST_CLOSED) {
+                    closedChest = true;
+                    break;
+                }
             }
         }
+
         for (boolean rupeeFound : move.rupeesFound) {
             if (!rupeeFound) {
-                return MoveStatus.WIN_NO_RUPEE;
+                missingRupee = true;
+                break;
             }
         }
-        return MoveStatus.WIN;
-    }
 
-    private static boolean isFailingMove(@NotNull Move move) {
-        if (move.groundEntities[move.playerPositionIndex] != ENTITY_GROUND_DOWNSTAIR) {
-            return false;
+        if ((!closedChest) && (!missingRupee)) {
+            return MoveStatus.WIN;
+        } else if ((move.rupeesFound.length > 0) && (!missingRupee)) {
+            return MoveStatus.RUPEE;
+        } else if (level.hasChest() && (!closedChest)) {
+            return MoveStatus.CHEST;
+        } else {
+            return MoveStatus.EXIT;
         }
-        for (char entity : move.upEntities) {
-            if (entity == ENTITY_UP_CHEST_CLOSED) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private static boolean nextMoves(@NotNull Level level, @NotNull Move move, @NotNull Function<Move, Boolean> callback) {
@@ -173,25 +200,24 @@ public class Player implements GroundEntity, UpEntity {
         if (targetPositionIndex < 0) {
             return false;
         }
-        int initialPositionIndex = initialMove.playerPositionIndex;
 
         char upTargetEntity = initialMove.upEntities[targetPositionIndex];
         switch (upTargetEntity) {
-            case ENTITY_UP_BOULDER, ENTITY_UP_CHEST_OPEN, ENTITY_UP_ENEMY_FACING_UP, ENTITY_UP_ENEMY_FACING_DOWN, ENTITY_UP_ENEMY_FACING_LEFT, ENTITY_UP_ENEMY_FACING_RIGHT -> {
+            case ENTITY_UP_BOULDER, ENTITY_UP_CHEST_OPEN, ENTITY_UP_ENEMY_BASIC_FACING_UP, ENTITY_UP_ENEMY_BASIC_FACING_DOWN, ENTITY_UP_ENEMY_BASIC_FACING_LEFT, ENTITY_UP_ENEMY_BASIC_FACING_RIGHT -> {
                 return false;
             }
             case ENTITY_UP_CHEST_CLOSED -> {
-                return actionChestClosed(initialMove, targetPositionIndex, initialPositionIndex, callback);
+                return actionChestClosed(initialMove, targetPositionIndex, initialMove.playerPositionIndex, callback);
             }
         }
 
         char groundTargetEntity = initialMove.groundEntities[targetPositionIndex];
         switch (groundTargetEntity) {
             case ENTITY_GROUND_GROUND, ENTITY_GROUND_DOWNSTAIR, ENTITY_GROUND_GLASS -> {
-                return actionAbsorbGround(level, initialMove, targetPositionIndex, initialPositionIndex, callback);
+                return actionAbsorbGround(level, initialMove, targetPositionIndex, initialMove.playerPositionIndex, callback);
             }
             case ENTITY_GROUND_HOLE -> {
-                return actionCreateGround(level, initialMove, targetPositionIndex, initialPositionIndex, callback);
+                return actionCreateGround(level, initialMove, targetPositionIndex, initialMove.playerPositionIndex, callback);
             }
         }
         throw new IllegalStateException("Unexpected value: [" + upTargetEntity + "] [" + groundTargetEntity + "]");
@@ -200,7 +226,7 @@ public class Player implements GroundEntity, UpEntity {
     private static boolean actionCreateGround(@NotNull Level level,
                                               @NotNull Move initialMove,
                                               int targetPositionIndex,
-                                              int initialPositionIndex,
+                                              int playerPositionIndex,
                                               @NotNull Function<Move, Boolean> callback) {
         if (initialMove.playerState == Move.PlayerState.EMPTY) {
             return false;
@@ -208,8 +234,8 @@ public class Player implements GroundEntity, UpEntity {
         char[] newGroundEntities = initialMove.groundEntities.clone();
         char[] newUpEntities = initialMove.upEntities.clone();
         newGroundEntities[targetPositionIndex] = initialMove.playerState.entity;
-        postMove(level, initialMove, newGroundEntities, newUpEntities, -1);
-        if (UpEntity.isEnemy(newUpEntities[initialPositionIndex])) {
+        postMove(level, initialMove, playerPositionIndex, newGroundEntities, newUpEntities, -1);
+        if (UpEntity.isEnemy(newUpEntities[playerPositionIndex])) {
             return false;
         }
         Move newMove = new Move(
@@ -229,7 +255,7 @@ public class Player implements GroundEntity, UpEntity {
             @NotNull Level level,
             @NotNull Move initialMove,
             int targetPositionIndex,
-            int initialPositionIndex,
+            int playerPositionIndex,
             @NotNull Function<Move, Boolean> callback) {
         if (initialMove.playerState != Move.PlayerState.EMPTY) {
             return false;
@@ -243,8 +269,8 @@ public class Player implements GroundEntity, UpEntity {
             newRupeesFound[rupeeIndex] = true;
         }
         newGroundEntities[targetPositionIndex] = ENTITY_GROUND_HOLE;
-        postMove(level, initialMove, newGroundEntities, newUpEntities, -1);
-        if (UpEntity.isEnemy(newUpEntities[initialPositionIndex])) {
+        postMove(level, initialMove, playerPositionIndex, newGroundEntities, newUpEntities, -1);
+        if (UpEntity.isEnemy(newUpEntities[playerPositionIndex])) {
             return false;
         }
         Move newMove = new Move(
@@ -301,7 +327,7 @@ public class Player implements GroundEntity, UpEntity {
         Position targetPosition = level.positions()[initialMove.playerPositionIndex].add(delta);
         int targetPositionIndex = level.positionIndex(targetPosition);
         if (targetPositionIndex < 0) {
-            postMove(level, initialMove, newGroundEntities, newUpEntities, -1);
+            postMove(level, initialMove, initialMove.playerPositionIndex, newGroundEntities, newUpEntities, -1);
             if (UpEntity.isEnemy(newUpEntities[initialPositionIndex])) {
                 return false;
             }
@@ -325,7 +351,7 @@ public class Player implements GroundEntity, UpEntity {
                 return moveBoulder(level, initialMove, direction, delta, action, targetPosition, targetPositionIndex, newGroundEntities, newUpEntities, initialPositionIndex, callback);
             }
             case ENTITY_UP_CHEST_OPEN, ENTITY_UP_CHEST_CLOSED -> {
-                postMove(level, initialMove, newGroundEntities, newUpEntities, -1);
+                postMove(level, initialMove, initialMove.playerPositionIndex, newGroundEntities, newUpEntities, -1);
                 if (UpEntity.isEnemy(newUpEntities[initialPositionIndex])) {
                     return false;
                 }
@@ -341,14 +367,14 @@ public class Player implements GroundEntity, UpEntity {
                 return callback.apply(newMove);
 
             }
-            case ENTITY_UP_ENEMY_FACING_UP, ENTITY_UP_ENEMY_FACING_DOWN, ENTITY_UP_ENEMY_FACING_LEFT, ENTITY_UP_ENEMY_FACING_RIGHT -> {
+            case ENTITY_UP_ENEMY_BASIC_FACING_UP, ENTITY_UP_ENEMY_BASIC_FACING_DOWN, ENTITY_UP_ENEMY_BASIC_FACING_LEFT, ENTITY_UP_ENEMY_BASIC_FACING_RIGHT -> {
                 return false;
             }
         }
         char targetGroundEntity = initialMove.groundEntities[targetPositionIndex];
         switch (targetGroundEntity) {
             case ENTITY_GROUND_GROUND, ENTITY_GROUND_DOWNSTAIR, ENTITY_GROUND_GLASS -> {
-                postMove(level, initialMove, newGroundEntities, newUpEntities, -1);
+                postMove(level, initialMove, targetPositionIndex, newGroundEntities, newUpEntities, -1);
                 if (UpEntity.isEnemy(newUpEntities[targetPositionIndex]) || UpEntity.isEnemy(initialMove.upEntities[targetPositionIndex])) {
                     return false;
                 }
@@ -362,9 +388,6 @@ public class Player implements GroundEntity, UpEntity {
                         initialMove.rupeesFound,
                         new Move.ActionLinkedElement(action, initialMove.actions)
                 );
-                if (isFailingMove(newMove)) {
-                    return false;
-                }
                 return callback.apply(newMove);
             }
             case ENTITY_GROUND_HOLE -> {
@@ -403,10 +426,10 @@ public class Player implements GroundEntity, UpEntity {
                     );
                     return callback.apply(newMove);
                 }
-                case ENTITY_UP_ENEMY_FACING_UP, ENTITY_UP_ENEMY_FACING_DOWN, ENTITY_UP_ENEMY_FACING_LEFT, ENTITY_UP_ENEMY_FACING_RIGHT -> {
+                case ENTITY_UP_ENEMY_BASIC_FACING_UP, ENTITY_UP_ENEMY_BASIC_FACING_DOWN, ENTITY_UP_ENEMY_BASIC_FACING_LEFT, ENTITY_UP_ENEMY_BASIC_FACING_RIGHT -> {
                     newUpEntities[targetPositionIndex] = ENTITY_UP_EMPTY;
                     newUpEntities[beyondPositionIndex] = ENTITY_UP_BOULDER;
-                    postMove(level, initialMove, newGroundEntities, newUpEntities, beyondPositionIndex);
+                    postMove(level, initialMove, targetPositionIndex, newGroundEntities, newUpEntities, beyondPositionIndex);
                     if (UpEntity.isEnemy(newUpEntities[initialPositionIndex])) {
                         return false;
                     }
@@ -428,7 +451,7 @@ public class Player implements GroundEntity, UpEntity {
                 case ENTITY_GROUND_GROUND, ENTITY_GROUND_DOWNSTAIR -> {
                     newUpEntities[targetPositionIndex] = ENTITY_UP_EMPTY;
                     newUpEntities[beyondPositionIndex] = ENTITY_UP_BOULDER;
-                    postMove(level, initialMove, newGroundEntities, newUpEntities, beyondPositionIndex);
+                    postMove(level, initialMove, targetPositionIndex, newGroundEntities, newUpEntities, beyondPositionIndex);
                     if (UpEntity.isEnemy(newUpEntities[initialPositionIndex])) {
                         return false;
                     }
@@ -446,7 +469,7 @@ public class Player implements GroundEntity, UpEntity {
                 }
                 case ENTITY_GROUND_HOLE -> {
                     newUpEntities[targetPositionIndex] = ENTITY_UP_EMPTY;
-                    postMove(level, initialMove, newGroundEntities, newUpEntities, -1);
+                    postMove(level, initialMove, targetPositionIndex, newGroundEntities, newUpEntities, -1);
                     if (UpEntity.isEnemy(newUpEntities[initialPositionIndex])) {
                         return false;
                     }
@@ -470,6 +493,7 @@ public class Player implements GroundEntity, UpEntity {
     private static void postMove(
             @NotNull Level level,
             @NotNull Move initialMove,
+            int newPlayerPositionIndex,
             char @NotNull [] newGroundEntities,
             char @NotNull [] newUpEntities,
             int crushedEnemyIndex
@@ -477,52 +501,61 @@ public class Player implements GroundEntity, UpEntity {
         for (int currentEntityIndex = 0; currentEntityIndex < newUpEntities.length; currentEntityIndex++) {
             char currentUpEntity = initialMove.upEntities[currentEntityIndex];
             switch (currentUpEntity) {
-                case ENTITY_UP_ENEMY_FACING_DOWN -> {
+                case ENTITY_UP_ENEMY_BASIC_FACING_DOWN -> {
                     if (currentEntityIndex != crushedEnemyIndex) {
-                        postMoveEnemy(
+                        postMoveBasicEnemy(
                                 level,
                                 newGroundEntities,
                                 newUpEntities,
                                 currentEntityIndex,
                                 DELTA_DOWN,
-                                ENTITY_UP_ENEMY_FACING_DOWN,
-                                ENTITY_UP_ENEMY_FACING_UP);
+                                ENTITY_UP_ENEMY_BASIC_FACING_DOWN,
+                                ENTITY_UP_ENEMY_BASIC_FACING_UP);
                     }
                 }
-                case ENTITY_UP_ENEMY_FACING_LEFT -> {
+                case ENTITY_UP_ENEMY_BASIC_FACING_LEFT -> {
                     if (currentEntityIndex != crushedEnemyIndex) {
-                        postMoveEnemy(
+                        postMoveBasicEnemy(
                                 level,
                                 newGroundEntities,
                                 newUpEntities,
                                 currentEntityIndex,
                                 DELTA_LEFT,
-                                ENTITY_UP_ENEMY_FACING_LEFT,
-                                ENTITY_UP_ENEMY_FACING_RIGHT);
+                                ENTITY_UP_ENEMY_BASIC_FACING_LEFT,
+                                ENTITY_UP_ENEMY_BASIC_FACING_RIGHT);
                     }
                 }
-                case ENTITY_UP_ENEMY_FACING_RIGHT -> {
+                case ENTITY_UP_ENEMY_BASIC_FACING_RIGHT -> {
                     if (currentEntityIndex != crushedEnemyIndex) {
-                        postMoveEnemy(
+                        postMoveBasicEnemy(
                                 level,
                                 newGroundEntities,
                                 newUpEntities,
                                 currentEntityIndex,
                                 DELTA_RIGHT,
-                                ENTITY_UP_ENEMY_FACING_RIGHT,
-                                ENTITY_UP_ENEMY_FACING_LEFT);
+                                ENTITY_UP_ENEMY_BASIC_FACING_RIGHT,
+                                ENTITY_UP_ENEMY_BASIC_FACING_LEFT);
                     }
                 }
-                case ENTITY_UP_ENEMY_FACING_UP -> {
+                case ENTITY_UP_ENEMY_BASIC_FACING_UP -> {
                     if (currentEntityIndex != crushedEnemyIndex) {
-                        postMoveEnemy(level,
+                        postMoveBasicEnemy(level,
                                 newGroundEntities,
                                 newUpEntities,
                                 currentEntityIndex,
                                 DELTA_UP,
-                                ENTITY_UP_ENEMY_FACING_UP,
-                                ENTITY_UP_ENEMY_FACING_DOWN);
+                                ENTITY_UP_ENEMY_BASIC_FACING_UP,
+                                ENTITY_UP_ENEMY_BASIC_FACING_DOWN);
                     }
+                }
+                case ENTITY_UP_ENEMY_SEEKER -> {
+                    postMoveSeekerEnemy(
+                            level,
+                            newPlayerPositionIndex,
+                            newGroundEntities,
+                            newUpEntities,
+                            currentEntityIndex
+                    );
                 }
             }
             char currentGroundEntity = initialMove.groundEntities[currentEntityIndex];
@@ -536,7 +569,62 @@ public class Player implements GroundEntity, UpEntity {
         }
     }
 
-    private static void postMoveEnemy(
+    private static void postMoveSeekerEnemy(
+            @NotNull Level level,
+            int newPlayerPositionIndex,
+            char @NotNull [] newGroundEntities,
+            char @NotNull [] newUpEntities,
+            int currentEntityIndex) {
+        // Is the played in the same line or column than the enemy
+        Position playerPosition = level.positions()[newPlayerPositionIndex];
+        Position enemyPosition = level.positions()[currentEntityIndex];
+        Position delta;
+        if (playerPosition.line() == enemyPosition.line()) {
+            delta = (playerPosition.column() > enemyPosition.column()) ? DELTA_RIGHT : DELTA_LEFT;
+        } else if (playerPosition.column() == enemyPosition.column()) {
+            delta = (playerPosition.line() > enemyPosition.line()) ? DELTA_DOWN : DELTA_UP;
+        } else {
+            return;
+        }
+
+        // Check if the player is visible
+        Position currentlyCheckedPosition = enemyPosition.add(delta);
+        while (!currentlyCheckedPosition.equals(playerPosition)) {
+            int currentlyCheckedPositionIndex = level.positionIndex(currentlyCheckedPosition);
+            if (currentlyCheckedPositionIndex < 0) {
+                return;
+            }
+            if (newUpEntities[currentlyCheckedPositionIndex] != ENTITY_UP_EMPTY) {
+                return;
+            }
+            currentlyCheckedPosition = currentlyCheckedPosition.add(delta);
+        }
+
+        // Move the enemy
+        Position targetPosition = enemyPosition.add(delta);
+        int targetEntity = level.positionIndex(targetPosition);
+        char currentGroundEntity = newGroundEntities[targetEntity];
+        switch (currentGroundEntity) {
+            case ENTITY_GROUND_HOLE -> {
+                newUpEntities[currentEntityIndex] = ENTITY_UP_EMPTY;
+                if (newGroundEntities[currentEntityIndex] == ENTITY_GROUND_GLASS) {
+                    newGroundEntities[currentEntityIndex] = ENTITY_GROUND_HOLE;
+                }
+                return;
+            }
+            case ENTITY_GROUND_GROUND, ENTITY_GROUND_DOWNSTAIR, ENTITY_GROUND_GLASS -> {
+                newUpEntities[currentEntityIndex] = ENTITY_UP_EMPTY;
+                newUpEntities[targetEntity] = ENTITY_UP_ENEMY_SEEKER;
+                if (newGroundEntities[currentEntityIndex] == ENTITY_GROUND_GLASS) {
+                    newGroundEntities[currentEntityIndex] = ENTITY_GROUND_HOLE;
+                }
+                return;
+            }
+        }
+        throw new IllegalStateException("Unexpected value: [" + currentGroundEntity + "]");
+    }
+
+    private static void postMoveBasicEnemy(
             @NotNull Level level,
             char @NotNull [] newGroundEntities,
             char @NotNull [] newUpEntities,
@@ -551,8 +639,9 @@ public class Player implements GroundEntity, UpEntity {
         } else {
             char targetUpEntity = newUpEntities[targetPositionIndex];
             switch (targetUpEntity) {
-                case ENTITY_UP_BOULDER, ENTITY_UP_CHEST_CLOSED, ENTITY_UP_CHEST_OPEN, ENTITY_UP_ENEMY_FACING_DOWN, ENTITY_UP_ENEMY_FACING_LEFT, ENTITY_UP_ENEMY_FACING_RIGHT, ENTITY_UP_ENEMY_FACING_UP -> {
+                case ENTITY_UP_BOULDER, ENTITY_UP_CHEST_CLOSED, ENTITY_UP_CHEST_OPEN, ENTITY_UP_ENEMY_BASIC_FACING_DOWN, ENTITY_UP_ENEMY_BASIC_FACING_LEFT, ENTITY_UP_ENEMY_BASIC_FACING_RIGHT, ENTITY_UP_ENEMY_BASIC_FACING_UP -> {
                     newUpEntities[currentEntityIndex] = oppositeEnemy;
+                    return;
                 }
             }
             char targetGroundEntity = newGroundEntities[targetPositionIndex];

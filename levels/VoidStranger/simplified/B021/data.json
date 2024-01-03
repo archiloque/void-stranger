@@ -38,9 +38,9 @@
 				}
 			}
 		],
-		"Enemy": [
+		"Enemy_basic": [
 			{
-				"id": "Enemy",
+				"id": "Enemy_basic",
 				"iid": "675bcaa0-8990-11ee-8379-19abcff51336",
 				"layer": "Up",
 				"x": 32,

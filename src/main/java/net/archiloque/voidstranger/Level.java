@@ -9,7 +9,8 @@ public record Level(
         int width,
         int height,
         @NotNull Position[] positions,
-        int @NotNull [] rupeesIndexes) {
+        int @NotNull [] rupeesIndexes,
+        boolean hasChest) {
 
     public int positionIndex(@NotNull Position position) {
         return Arrays.binarySearch(positions, position);

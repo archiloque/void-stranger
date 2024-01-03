@@ -51,9 +51,9 @@
 				"customFields" : {}
 			}
 		],
-		"Enemy": [
+		"Enemy_basic": [
 			{
-				"id": "Enemy",
+				"id": "Enemy_basic",
 				"iid": "79a1ee10-8990-11ee-8379-7dbf3cfc2eb1",
 				"layer": "Up",
 				"x": 96,

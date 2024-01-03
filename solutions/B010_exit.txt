@@ -1,0 +1,64 @@
+LEFT, UP, UP, UP, UP
+
+LEFT
+UP x 4
+
+■■■■■■■■■■■■■■
+■ ↓■■ B    B ■
+■  ■■B BBBB B■
+■  ■■ B B  C ■
+■  ■■B BB B B■
+■  @  B B B B■
+■  ■■B B B B ■
+■■■■■■■■■■■■■■
+
+LEFT
+■■■■■■■■■■■■■■
+■ ↓■■ B    B ■
+■  ■■B BBBB B■
+■  ■■ B B  C ■
+■  ■■B BB B B■
+■ @   B B B B■
+■  ■■B B B B ■
+■■■■■■■■■■■■■■
+
+UP
+■■■■■■■■■■■■■■
+■ ↓■■ B    B ■
+■  ■■B BBBB B■
+■  ■■ B B  C ■
+■ @■■B BB B B■
+■     B B B B■
+■  ■■B B B B ■
+■■■■■■■■■■■■■■
+
+UP
+■■■■■■■■■■■■■■
+■ ↓■■ B    B ■
+■  ■■B BBBB B■
+■ @■■ B B  C ■
+■  ■■B BB B B■
+■     B B B B■
+■  ■■B B B B ■
+■■■■■■■■■■■■■■
+
+UP
+■■■■■■■■■■■■■■
+■ ↓■■ B    B ■
+■ @■■B BBBB B■
+■  ■■ B B  C ■
+■  ■■B BB B B■
+■     B B B B■
+■  ■■B B B B ■
+■■■■■■■■■■■■■■
+
+UP
+■■■■■■■■■■■■■■
+■ @■■ B    B ■
+■  ■■B BBBB B■
+■  ■■ B B  C ■
+■  ■■B BB B B■
+■     B B B B■
+■  ■■B B B B ■
+■■■■■■■■■■■■■■
+

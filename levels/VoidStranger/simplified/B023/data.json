@@ -25,6 +25,19 @@
 				}
 			}
 		],
+		"Rupee": [
+			{
+				"id": "Rupee",
+				"iid": "af371db0-8990-11ee-962d-dd047dcfce9e",
+				"layer": "Special",
+				"x": 96,
+				"y": 96,
+				"width": 16,
+				"height": 16,
+				"color": 14120515,
+				"customFields" : {}
+			}
+		],
 		"Wall": [
 			{
 				"id": "Wall",

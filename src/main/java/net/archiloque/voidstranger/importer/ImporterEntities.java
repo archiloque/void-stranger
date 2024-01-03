@@ -21,9 +21,13 @@ public record ImporterEntities(
         @Nullable
         List<SimpleImporterEntity> downStairs,
 
-        @SerializedName("Enemy")
+        @SerializedName("Enemy_basic")
         @Nullable
-        List<ImporterEntityWithDirection> enemy,
+        List<ImporterEntityWithDirection> enemyBasic,
+
+        @SerializedName("Enemy_seeker")
+        @Nullable
+        List<SimpleImporterEntity> enemySeeker,
 
         @SerializedName("Glass")
         @Nullable
@@ -55,7 +59,8 @@ public record ImporterEntities(
                 boulder,
                 chest,
                 downStairs,
-                enemy,
+                enemyBasic,
+                enemySeeker,
                 glass,
                 ground,
                 hole,
