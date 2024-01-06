@@ -14,7 +14,7 @@ public interface UpEntity {
 
     static boolean isEnemy(char charEntity) {
         switch (charEntity) {
-            case ENTITY_UP_ENEMY_BASIC_FACING_DOWN, ENTITY_UP_ENEMY_BASIC_FACING_UP, ENTITY_UP_ENEMY_BASIC_FACING_LEFT, ENTITY_UP_ENEMY_BASIC_FACING_RIGHT -> {
+            case ENTITY_UP_ENEMY_SEEKER, ENTITY_UP_ENEMY_BASIC_FACING_DOWN, ENTITY_UP_ENEMY_BASIC_FACING_UP, ENTITY_UP_ENEMY_BASIC_FACING_LEFT, ENTITY_UP_ENEMY_BASIC_FACING_RIGHT -> {
                 return true;
             }
             default -> {

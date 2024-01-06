@@ -1,15 +1,15 @@
 {
 	"identifier": "B027",
 	"uniqueIdentifer": "381e1cf0-8990-11ee-962d-2b4cd4224600",
-	"x": 224,
+	"x": 16,
 	"y": 3584,
 	"width": 208,
 	"height": 112,
 	"bgColor": "#696A79",
 	"neighbourLevels": [
 		{
-			"levelIid": "a6c640a0-8990-11ee-8379-cb14f9d7abc6",
-			"dir": "w"
+			"levelIid": "81ebcfa0-8990-11ee-9b88-9f8b180df284",
+			"dir": "n"
 		}
 	],
 	"customFields" : {},

@@ -415,6 +415,11 @@ public class Player implements GroundEntity, UpEntity {
             char beyondPositionUpEntity = initialMove.upEntities[beyondPositionIndex];
             switch (beyondPositionUpEntity) {
                 case ENTITY_UP_BOULDER, ENTITY_UP_CHEST_OPEN, ENTITY_UP_CHEST_CLOSED -> {
+                    postMove(level, initialMove, initialMove.playerPositionIndex, newGroundEntities, newUpEntities, beyondPositionIndex);
+                    if (UpEntity.isEnemy(newUpEntities[initialPositionIndex])) {
+                        return false;
+                    }
+
                     Move newMove = new Move(
                             initialMove.playerPositionIndex,
                             direction,
@@ -448,12 +453,16 @@ public class Player implements GroundEntity, UpEntity {
             }
             char beyondPositionGroundEntity = initialMove.groundEntities[beyondPositionIndex];
             switch (beyondPositionGroundEntity) {
-                case ENTITY_GROUND_GROUND, ENTITY_GROUND_DOWNSTAIR -> {
+                case ENTITY_GROUND_GROUND, ENTITY_GROUND_DOWNSTAIR, ENTITY_GROUND_GLASS -> {
                     newUpEntities[targetPositionIndex] = ENTITY_UP_EMPTY;
                     newUpEntities[beyondPositionIndex] = ENTITY_UP_BOULDER;
                     postMove(level, initialMove, targetPositionIndex, newGroundEntities, newUpEntities, beyondPositionIndex);
                     if (UpEntity.isEnemy(newUpEntities[initialPositionIndex])) {
                         return false;
+                    }
+
+                    if(initialMove.groundEntities[targetPositionIndex] == ENTITY_GROUND_GLASS) {
+                        newGroundEntities[targetPositionIndex] = ENTITY_GROUND_HOLE;
                     }
 
                     Move newMove = new Move(
@@ -474,6 +483,10 @@ public class Player implements GroundEntity, UpEntity {
                         return false;
                     }
 
+                    if(initialMove.groundEntities[targetPositionIndex] == ENTITY_GROUND_GLASS) {
+                        newGroundEntities[targetPositionIndex] = ENTITY_GROUND_HOLE;
+                    }
+
                     Move newMove = new Move(
                             initialMove.playerPositionIndex,
                             direction,
@@ -486,6 +499,21 @@ public class Player implements GroundEntity, UpEntity {
                     return callback.apply(newMove);
                 }
             }
+        } else {
+            postMove(level, initialMove, initialMove.playerPositionIndex, newGroundEntities, newUpEntities, beyondPositionIndex);
+            if (UpEntity.isEnemy(newUpEntities[initialPositionIndex])) {
+                return false;
+            }
+            Move newMove = new Move(
+                    initialMove.playerPositionIndex,
+                    direction,
+                    initialMove.playerState,
+                    newGroundEntities,
+                    newUpEntities,
+                    initialMove.rupeesFound,
+                    new Move.ActionLinkedElement(action, initialMove.actions)
+            );
+            return callback.apply(newMove);
         }
         return false;
     }
@@ -649,9 +677,12 @@ public class Player implements GroundEntity, UpEntity {
                 case ENTITY_GROUND_HOLE -> {
                     newUpEntities[currentEntityIndex] = oppositeEnemy;
                 }
-                case ENTITY_GROUND_GROUND, ENTITY_GROUND_DOWNSTAIR -> {
+                case ENTITY_GROUND_GROUND, ENTITY_GROUND_DOWNSTAIR, ENTITY_GROUND_GLASS -> {
                     newUpEntities[currentEntityIndex] = ENTITY_UP_EMPTY;
                     newUpEntities[targetPositionIndex] = currentEntity;
+                    if (newGroundEntities[currentEntityIndex] == ENTITY_GROUND_GLASS) {
+                        newGroundEntities[currentEntityIndex] = ENTITY_GROUND_HOLE;
+                    }
                 }
             }
         }
