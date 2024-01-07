@@ -599,12 +599,12 @@ public class Player implements GroundEntity, UpEntity {
 
     private static void postMoveSeekerEnemy(
             @NotNull Level level,
-            int newPlayerPositionIndex,
-            char @NotNull [] newGroundEntities,
-            char @NotNull [] newUpEntities,
+            int playerPositionIndex,
+            char @NotNull [] groundEntities,
+            char @NotNull [] upEntities,
             int currentEntityIndex) {
         // Is the played in the same line or column than the enemy
-        Position playerPosition = level.positions()[newPlayerPositionIndex];
+        Position playerPosition = level.positions()[playerPositionIndex];
         Position enemyPosition = level.positions()[currentEntityIndex];
         Position delta;
         if (playerPosition.line() == enemyPosition.line()) {
@@ -622,7 +622,7 @@ public class Player implements GroundEntity, UpEntity {
             if (currentlyCheckedPositionIndex < 0) {
                 return;
             }
-            if (newUpEntities[currentlyCheckedPositionIndex] != ENTITY_UP_EMPTY) {
+            if (upEntities[currentlyCheckedPositionIndex] != ENTITY_UP_EMPTY) {
                 return;
             }
             currentlyCheckedPosition = currentlyCheckedPosition.add(delta);
@@ -630,21 +630,21 @@ public class Player implements GroundEntity, UpEntity {
 
         // Move the enemy
         Position targetPosition = enemyPosition.add(delta);
-        int targetEntity = level.positionIndex(targetPosition);
-        char currentGroundEntity = newGroundEntities[targetEntity];
+        int targetEntityIndex = level.positionIndex(targetPosition);
+        char currentGroundEntity = groundEntities[targetEntityIndex];
         switch (currentGroundEntity) {
             case ENTITY_GROUND_HOLE -> {
-                newUpEntities[currentEntityIndex] = ENTITY_UP_EMPTY;
-                if (newGroundEntities[currentEntityIndex] == ENTITY_GROUND_GLASS) {
-                    newGroundEntities[currentEntityIndex] = ENTITY_GROUND_HOLE;
+                upEntities[currentEntityIndex] = ENTITY_UP_EMPTY;
+                if (groundEntities[currentEntityIndex] == ENTITY_GROUND_GLASS) {
+                    groundEntities[currentEntityIndex] = ENTITY_GROUND_HOLE;
                 }
                 return;
             }
             case ENTITY_GROUND_GROUND, ENTITY_GROUND_DOWNSTAIR, ENTITY_GROUND_GLASS -> {
-                newUpEntities[currentEntityIndex] = ENTITY_UP_EMPTY;
-                newUpEntities[targetEntity] = ENTITY_UP_ENEMY_SEEKER;
-                if (newGroundEntities[currentEntityIndex] == ENTITY_GROUND_GLASS) {
-                    newGroundEntities[currentEntityIndex] = ENTITY_GROUND_HOLE;
+                upEntities[currentEntityIndex] = ENTITY_UP_EMPTY;
+                upEntities[targetEntityIndex] = ENTITY_UP_ENEMY_SEEKER;
+                if (groundEntities[currentEntityIndex] == ENTITY_GROUND_GLASS) {
+                    groundEntities[currentEntityIndex] = ENTITY_GROUND_HOLE;
                 }
                 return;
             }
